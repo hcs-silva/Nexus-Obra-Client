@@ -16,7 +16,7 @@
 │                                                             │
 │  ❌ Cannot deploy to production                             │
 │  ✅ Can use for internal demos                              │
-│  ⚠️  Requires 6-8 weeks of work for production readiness    │
+│  ⚠️  Requires 8-10 weeks of work for production readiness   │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -148,7 +148,7 @@ Missing Features (40%):
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│ Phase 1: CRITICAL FIXES (1-2 weeks)                         │
+│ Phase 1: CRITICAL FIXES (2 weeks)                           │
 ├─────────────────────────────────────────────────────────────┤
 │ ✓ Fix unprotected routes                                    │
 │ ✓ Remove hardcoded credentials                              │
@@ -162,7 +162,7 @@ Missing Features (40%):
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│ Phase 2: ESSENTIAL FEATURES (2-3 weeks)                     │
+│ Phase 2: ESSENTIAL FEATURES (3-4 weeks)                     │
 ├─────────────────────────────────────────────────────────────┤
 │ ✓ Complete Quotations feature                               │
 │ ✓ Add form validation                                       │
@@ -175,7 +175,7 @@ Missing Features (40%):
 └─────────────────────────────────────────────────────────────┘
 
 ┌─────────────────────────────────────────────────────────────┐
-│ Phase 3: POLISH (2-3 weeks)                                 │
+│ Phase 3: POLISH (3-4 weeks)                                 │
 ├─────────────────────────────────────────────────────────────┤
 │ ✓ Performance optimization                                  │
 │ ✓ UX improvements (pagination, search)                      │
@@ -185,9 +185,9 @@ Missing Features (40%):
 │ Effort: 80-120 hours                                        │
 └─────────────────────────────────────────────────────────────┘
 
-Total Timeline: 6-8 weeks
+Total Timeline: 8-10 weeks
 Total Effort: 220-320 hours
-Team Size: 1-2 developers
+Team Size: 1 developer
 ```
 
 ---
@@ -324,7 +324,7 @@ Required Actions:
 │  ❌ Customer-facing application                              │
 │  ❌ Live data processing                                     │
 │                                                             │
-│  Required Work: 6-8 weeks (1-2 developers)                  │
+│  Required Work: 8-10 weeks (1 developer)                    │
 │                                                             │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -337,7 +337,7 @@ Required Actions:
 
 1. **Read:** PRODUCTION_READINESS_REPORT.md (full analysis)
 2. **Execute:** QUICK_FIXES_CHECKLIST.md (critical fixes)
-3. **Plan:** Allocate 6-8 weeks for production readiness
+3. **Plan:** Allocate 8-10 weeks for production readiness
 4. **Review:** After Phase 1 completion (2 weeks)
 
 **Priority:** Fix critical security issues THIS WEEK

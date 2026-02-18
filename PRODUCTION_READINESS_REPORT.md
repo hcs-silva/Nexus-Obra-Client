@@ -605,7 +605,7 @@ A minimal construction management system where:
 
 ## 📈 Next Steps - Prioritized Roadmap
 
-### 🔴 Phase 1: CRITICAL FIXES (1-2 weeks)
+### 🔴 Phase 1: CRITICAL FIXES (2 weeks)
 **Must complete before any production use**
 
 1. **Security Fixes** (Week 1)
@@ -636,7 +636,7 @@ A minimal construction management system where:
 
 ---
 
-### 🟡 Phase 2: ESSENTIAL FEATURES (2-3 weeks)
+### 🟡 Phase 2: ESSENTIAL FEATURES (3-4 weeks)
 **Required for production MVP**
 
 1. **Complete Missing Features** (Week 3)
@@ -666,7 +666,7 @@ A minimal construction management system where:
 
 ---
 
-### 🟢 Phase 3: POLISH & OPTIMIZATION (2-3 weeks)
+### 🟢 Phase 3: POLISH & OPTIMIZATION (3-4 weeks)
 **Enhance user experience and performance**
 
 1. **Performance Optimization** (Week 6)
@@ -731,8 +731,8 @@ A minimal construction management system where:
 
 ### Minimum Viable Product (Production-Ready)
 
-**Timeline:** 6-8 weeks  
-**Team Size:** 1-2 developers  
+**Timeline:** 8-10 weeks  
+**Team Size:** 1 developer  
 **Total Effort:** 220-320 hours
 
 **Breakdown:**
@@ -742,8 +742,8 @@ A minimal construction management system where:
 
 ### Full Feature Set
 
-**Timeline:** 12-16 weeks  
-**Team Size:** 2-3 developers  
+**Timeline:** 16-20 weeks  
+**Team Size:** 1 developer  
 **Total Effort:** 400-600 hours
 
 ---
@@ -882,17 +882,17 @@ This application represents a **promising construction management MVP** with:
 **Short Term (2 weeks):**
 Focus on security fixes and testing. Fix the four unprotected routes, remove hardcoded credentials, update dependencies, and add basic test coverage. This will make the application safe for staging deployment.
 
-**Medium Term (6-8 weeks):**
+**Medium Term (8-10 weeks):**
 Complete the MVP by implementing missing features (Quotations), adding proper deployment configuration, and improving error handling. This will make the application production-ready for internal use.
 
-**Long Term (3-6 months):**
+**Long Term (4-6 months):**
 Enhance with advanced features, performance optimizations, and scalability improvements. This will make the application ready for external customers and scale.
 
 ### Final Verdict
 
 **🎯 You have a 60% complete MVP with a solid foundation, but it requires critical security fixes before any production deployment.**
 
-The application demonstrates good architecture and implementation quality, but the security vulnerabilities and missing features prevent it from being production-ready. With 6-8 weeks of focused development addressing the issues outlined in this report, you will have a robust, secure, production-ready construction management system.
+The application demonstrates good architecture and implementation quality, but the security vulnerabilities and missing features prevent it from being production-ready. With 8-10 weeks of focused development addressing the issues outlined in this report, you will have a robust, secure, production-ready construction management system.
 
 ---
 
