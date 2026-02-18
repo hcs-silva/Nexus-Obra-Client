@@ -2,6 +2,18 @@
 
 Client-side application for **Nexus Obra**, a multi-tenant construction management system (Gestão de Obra). Users can manage clients, builds (obras), and quotations (orçamentos) with role-based access control.
 
+## 📊 Production Readiness Status
+
+**Current Status:** ⚠️ 60% Complete - NOT Production Ready  
+**Last Analysis:** February 18, 2026
+
+📋 **Read the full analysis:**
+- [**Executive Summary**](./EXECUTIVE_SUMMARY.md) - Quick overview with scorecards
+- [**Production Readiness Report**](./PRODUCTION_READINESS_REPORT.md) - Comprehensive analysis
+- [**Quick Fixes Checklist**](./QUICK_FIXES_CHECKLIST.md) - Immediate action items
+
+**Critical Issues:** 4 security vulnerabilities require immediate attention before production deployment.
+
 ## Tech Stack
 
 - **React 19** + **TypeScript**
