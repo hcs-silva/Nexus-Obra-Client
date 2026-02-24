@@ -25,8 +25,8 @@ const ObraList = () => {
       const filtered = obras.filter(
         (obra) =>
           obra.obraName.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          obra.location?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          obra.status.toLowerCase().includes(searchTerm?.toLowerCase()),
+          obra.obraLocation?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          obra.obraStatus.toLowerCase().includes(searchTerm?.toLowerCase()),
       );
       setFilteredObras(filtered);
     }
@@ -111,8 +111,8 @@ const ObraList = () => {
             filteredObras.map((obra) => (
               <tr key={obra._id}>
                 <td>{obra.obraName}</td>
-                <td>{obra.location || "N/A"}</td>
-                <td>{getStatusLabel(obra.status)}</td>
+                <td>{obra.obraLocation || "N/A"}</td>
+                <td>{getStatusLabel(obra.obraStatus)}</td>
                 <td>€{(obra.totalExpenses ?? 0).toFixed(2)}</td>
                 <td>
                   <button
