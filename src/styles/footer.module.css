@@ -4,9 +4,20 @@
   align-items: center;
   background: #111827;
   color: white;
-  padding: 3rem 1.5rem;
+  padding: 3rem;
+  width: 100%;
   text-align: center;
   border-top: 1px solid #1f2937;
+}
+@media (max-width: 768px) {
+  .footer {
+    padding: 1.5rem;
+  }
+}
+@media (max-width: 576px) {
+  .footer {
+    padding: 1rem;
+  }
 }
 .footer h3 {
   font-size: 1.25rem;
@@ -14,6 +25,11 @@
   color: white;
   line-height: 1.2;
   margin-bottom: 1rem;
+}
+@media (max-width: 576px) {
+  .footer h3 {
+    font-size: 1.125rem;
+  }
 }
 .footer p {
   color: #d1d5db;

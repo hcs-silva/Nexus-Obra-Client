@@ -3,6 +3,10 @@
 
 .title {
   @include heading($fs-3xl, 700, $primary-500);
+
+  @include respond-max($bp-sm) {
+    font-size: $fs-2xl;
+  }
 }
 
 .container {
@@ -14,11 +18,15 @@
   box-shadow: $shadow-md;
   margin-bottom: $space-lg;
   width: 100%;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
 }
 
 .deleteBtn {
   @include button-danger;
   padding: $space-lg;
   font-size: $fs-small;
-  margin: 15px
+  margin: 15px;
 }

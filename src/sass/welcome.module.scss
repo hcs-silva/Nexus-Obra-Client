@@ -8,26 +8,45 @@
   background: linear-gradient(135deg, $primary-500 0%, $accent-500 100%);
   gap: $space-2xl;
   padding: $space-lg;
+
+  @include respond-max($bp-sm) {
+    gap: $space-lg;
+    padding: $space-md;
+  }
 }
 
 .welcomePage {
   width: 100%;
-  
+  height: auto;
   @include flex-col;
   justify-content: center;
-  @include card-elevated;
+  align-items: center;
+
   padding: $space-2xl;
   gap: $space-lg;
+
+  @include respond-max($bp-sm) {
+    padding: $space-lg;
+    gap: $space-md;
+  }
 
   h1 {
     @include heading($fs-3xl, 800, $primary-500);
     text-align: center;
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-2xl;
+    }
   }
 
   p {
     color: $gray-600;
     text-align: center;
     font-size: $fs-lg;
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-base;
+    }
   }
 }
 
@@ -36,16 +55,31 @@
   gap: $space-lg;
   justify-content: center;
   flex-wrap: wrap;
+
+  @include respond-max($bp-sm) {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-md;
+  }
 }
 
 .btnPrimary {
   @include button-primary;
   padding: $space-md $space-2xl;
   font-size: $fs-base;
+
+  @include respond-max($bp-sm) {
+    width: 100%;
+  }
 }
 
 .btnSecondary {
   @include button-secondary;
   padding: $space-md $space-2xl;
   font-size: $fs-base;
+
+  @include respond-max($bp-sm) {
+    width: 100%;
+  }
 }

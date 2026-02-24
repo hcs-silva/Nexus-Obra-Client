@@ -10,6 +10,10 @@
   box-shadow: $shadow-md;
   margin-bottom: $space-lg;
   width: 100%;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
 }
 
 .header {
@@ -17,9 +21,19 @@
   margin-bottom: $space-lg;
   padding-bottom: $space-lg;
   border-bottom: 2px solid $gray-200;
+
+  @include respond-max($bp-md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-sm;
+  }
 }
 .title {
   @include heading($fs-3xl, 700, $primary-500);
+
+  @include respond-max($bp-sm) {
+    font-size: $fs-2xl;
+  }
 }
 
 .successMessage {

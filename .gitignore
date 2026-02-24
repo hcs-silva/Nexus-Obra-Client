@@ -1,3 +1,6 @@
+.env
+*.md
+!README.md
 # Logs
 logs
 *.log
@@ -12,6 +15,7 @@ dist
 dist-ssr
 *.local
 /styling template/
+Development-Reports/
 
 # Editor directories and files
 .vscode/*

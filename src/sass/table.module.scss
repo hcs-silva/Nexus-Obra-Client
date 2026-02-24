@@ -7,10 +7,29 @@
   padding: $space-lg;
   box-shadow: $shadow-md;
   overflow-x: auto;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
+
+  @include mobile-xs {
+    padding: $space-sm;
+  }
 }
 
 .tableContainer {
   @include table-base;
+
+  @include desktop-2xl {
+    thead th,
+    tbody td {
+      padding: $space-lg;
+    }
+  }
+
+  @include respond-max($bp-md) {
+    min-width: 720px;
+  }
 
   thead {
     th {
@@ -44,6 +63,10 @@
   display: flex;
   gap: $space-sm;
   justify-content: center;
+
+  @include respond-max($bp-sm) {
+    flex-wrap: wrap;
+  }
 }
 
 .editBtn,
@@ -53,6 +76,11 @@
   padding: $space-xs $space-md;
   font-size: $fs-small;
   border-radius: $radius-md;
+
+  @include mobile-xs {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
 .editBtn {
@@ -89,6 +117,11 @@
   margin-top: $space-lg;
   padding-top: $space-lg;
   border-top: 1px solid $gray-200;
+
+  @include respond-max($bp-sm) {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
 
   button {
     @include button-base;

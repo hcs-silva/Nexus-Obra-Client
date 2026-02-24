@@ -5,20 +5,52 @@
   width: 220px;
   background: $gray-900;
   color: white;
-  
+
   padding: $space-lg;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   text-align: center;
   gap: $space-md;
-  min-height: 100%;
+  min-height: 100vh;
+  height: 100vh;
   flex-shrink: 0;
   overflow-y: auto;
+  position: sticky;
+  top: 0;
+
+  @include respond-max($bp-md) {
+    width: 100%;
+    min-height: 0;
+    height: auto;
+    position: relative;
+    top: auto;
+    padding: $space-md;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+    gap: $space-sm;
+  }
+
+  @include mobile-xs {
+    height: fit-content;
+    min-height: fit-content;
+    max-height: none;
+    overflow-y: visible;
+    padding: $space-xs $space-sm;
+    gap: $space-xs;
+    align-items: stretch;
+  }
 
   h1 {
     @include heading($fs-xl, 700, white);
     margin-bottom: $space-md;
+
+    @include respond-max($bp-md) {
+      margin-bottom: 0;
+      font-size: $fs-lg;
+    }
   }
 
   img {
@@ -26,18 +58,48 @@
     max-width: 150px;
     margin: 0 auto;
     display: block;
+
+    @include respond-max($bp-md) {
+      max-height: 56px;
+      max-width: 56px;
+      margin: 0;
+    }
   }
 
   &.loginButton button {
     @include button-primary;
     width: 100%;
     margin: $space-sm 0;
+
+    @include mobile-xs {
+      margin: 0 0 $space-xs 0;
+      padding: $space-sm $space-sm;
+      font-size: $fs-small;
+    }
+
+    &:last-of-type {
+      @include mobile-xs {
+        margin-bottom: 0;
+      }
+    }
   }
 
   &.logoutButton button {
     @include button-danger;
     width: 100%;
     margin: $space-sm 0;
+
+    @include mobile-xs {
+      margin: 0 0 $space-xs 0;
+      padding: $space-sm $space-sm;
+      font-size: $fs-small;
+    }
+
+    &:last-of-type {
+      @include mobile-xs {
+        margin-bottom: 0;
+      }
+    }
   }
 
   .logo {
@@ -45,6 +107,10 @@
     display: flex;
     align-items: center;
     gap: $space-sm;
+
+    @include mobile-xs {
+      align-self: center;
+    }
   }
 
   .actions {
@@ -52,9 +118,23 @@
     gap: $space-lg;
     align-items: center;
 
+    @include respond-max($bp-md) {
+      gap: $space-sm;
+      width: 100%;
+      justify-content: flex-end;
+    }
+
+    @include mobile-xs {
+      gap: $space-xs;
+    }
+
     button {
       @include button-primary;
       padding: $space-sm $space-lg;
+
+      @include respond-max($bp-md) {
+        padding: $space-sm $space-md;
+      }
     }
   }
 
@@ -66,7 +146,7 @@
 .mobileMenu {
   display: none;
 
-  @media (max-width: 768px) {
+  @include respond-max($bp-md) {
     display: block;
     background: white;
     border-radius: $radius-md;

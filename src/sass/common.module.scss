@@ -13,27 +13,34 @@ h1 {
 
 // Main layout container
 .layout {
-  @include flex-col;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  grid-template-rows: 1fr;
   min-height: 100vh;
   background: $bg-light;
+
+  @include respond-max($bp-md) {
+    grid-template-columns: 1fr;
+  }
 }
 
 // Main content area (houses navbar + routes)
 .main {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  background: $bg-light;
-  gap: 0;
-  padding: 0;
+  min-height: 0;
+  overflow-y: auto;
 }
 
 // Routes content area (right side of navbar)
-.content {
-  flex: 1;
-  overflow-y: auto;
-  width: 100%;
-  padding: $space-xl;
+.contentArea {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  min-width: 0;
+  padding: 0;
+
+  @include respond-max($bp-md) {
+    min-height: 0;
+  }
 }
 
 // Container utility
@@ -42,6 +49,18 @@ h1 {
   margin: 0 auto;
   padding: 0 $space-lg;
   width: 100%;
+
+  @include desktop-2xl {
+    max-width: 1320px;
+  }
+
+  @include respond-max($bp-lg) {
+    padding: 0 $space-md;
+  }
+
+  @include respond-max($bp-sm) {
+    padding: 0 $space-sm;
+  }
 }
 
 // Utility class for hiding elements
@@ -61,6 +80,16 @@ form {
   max-width: 400px;
   padding: $space-2xl;
   gap: $space-md;
+
+  @include respond-max($bp-sm) {
+    max-width: 100%;
+    padding: $space-lg;
+  }
+
+  @include mobile-xs {
+    padding: $space-md;
+    gap: $space-sm;
+  }
 
   label {
     @include heading($fs-base, 600, $gray-900);
@@ -113,6 +142,11 @@ form {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: $space-lg;
+
+  @include respond-max($bp-md) {
+    grid-template-columns: 1fr;
+    gap: $space-md;
+  }
 }
 
 // Form actions for button containers
@@ -122,20 +156,44 @@ form {
   justify-content: flex-end;
   padding-top: $space-lg;
   border-top: 1px solid $gray-200;
+
+  @include respond-max($bp-sm) {
+    flex-direction: column;
+    align-items: stretch;
+    gap: $space-md;
+  }
+
+  @include desktop-2xl {
+    gap: $space-xl;
+  }
 }
 
 // Primary form button (submit button)
 .submitBtn {
   @include button-primary;
   padding: $space-md $space-2xl;
+
+  @include respond-max($bp-sm) {
+    width: 100%;
+  }
+
+  @include mobile-xs {
+    padding: $space-sm $space-md;
+  }
 }
-
-
 
 // Secondary form button (cancel/back button)
 .cancelBtn {
   @include button-secondary;
   padding: $space-md $space-2xl;
+
+  @include respond-max($bp-sm) {
+    width: 100%;
+  }
+
+  @include mobile-xs {
+    padding: $space-sm $space-md;
+  }
 }
 
 .clearBtn {

@@ -44,12 +44,11 @@ function App() {
   }, [logout]);
 
   return (
-    <>
-      <div className={styles.layout}>
+    <div className={styles.layout}>
+      <Navbar />
+      <div className={styles.contentArea}>
         <Header />
-        <div className={styles.main}>
-          <Navbar />
-
+        <main className={styles.main}>
           <Routes>
             <Route path="/" element={<WelcomePage />}></Route>
             <Route path="/login" element={<LoginPage />}></Route>
@@ -99,7 +98,7 @@ function App() {
                   <EditClient />
                 </ProtectedRoute>
               }
-              ></Route>
+            ></Route>
 
             {/* Client-based Protected Routes */}
             <Route
@@ -128,21 +127,15 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route path="/allobras" element={<ObraList />}></Route>
-            <Route path="/addobra" element={<CreateObra />}></Route>
-            <Route
-              path="/editobra/:obraId"
-              element={<EditObra />}
-            ></Route>
-            <Route
-              path="/manageobra/:obraId"
-              element={<ManageObra />}
-            ></Route>
+            <Route path="/allobras" element={<ProtectedRoute><ObraList /></ProtectedRoute>}></Route>
+            <Route path="/addobra" element={<ProtectedRoute><CreateObra /></ProtectedRoute>}></Route>
+            <Route path="/editobra/:obraId" element={<ProtectedRoute><EditObra /></ProtectedRoute>}></Route>
+            <Route path="/manageobra/:obraId" element={<ProtectedRoute><ManageObra /></ProtectedRoute>}></Route>
           </Routes>
-        </div>
+        </main>
         <Footer />
       </div>
-    </>
+    </div>
   );
 }
 

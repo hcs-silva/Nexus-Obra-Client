@@ -33,7 +33,7 @@ const EditObra = () => {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       const obra: Obra = response.data;
-      setName(obra.name);
+      setName(obra.obraName);
       setDescription(obra.description || "");
       setLocation(obra.location || "");
       setStartDate(obra.startDate ? new Date(obra.startDate).toISOString().split("T")[0] : "");
@@ -116,7 +116,7 @@ const EditObra = () => {
       }
 
       const updateData: Partial<Obra> = {
-        name: name.trim(),
+        obraName: name.trim(),
         description: description.trim(),
         location: location.trim(),
         startDate: startDate ? new Date(startDate) : undefined,
@@ -128,7 +128,7 @@ const EditObra = () => {
         updateData.cadernoEncargos = cadernoEncargos;
       }
 
-      await axios.put(
+      await axios.patch(
         `${BACKEND_URL}/obras/${obraId}`,
         updateData,
         {

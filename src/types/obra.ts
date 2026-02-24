@@ -15,15 +15,17 @@ export interface Fatura {
   category?: string;
 }
 
+
+
 export interface Obra {
   _id?: string;
   clientId: string;
-  name: string;
-  description?: string;
-  location?: string;
+  obraName: string;
+  obraDescription?: string;
+  obraLocation?: string;
   startDate?: Date;
   endDate?: Date;
-  status: 'planned' | 'in-progress' | 'completed' | 'cancelled';
+  obraStatus: 'planned' | 'in-progress' | 'completed' | 'cancelled';
   cadernoEncargos?: CadernoEncargos;
   faturas: Fatura[];
   totalExpenses: number;

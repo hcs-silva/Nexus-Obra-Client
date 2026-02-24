@@ -10,6 +10,11 @@
   margin-bottom: 1.5rem;
   width: 100%;
 }
+@media (max-width: 576px) {
+  .createClientWrapper {
+    padding: 1rem;
+  }
+}
 
 .header {
   display: flex;
@@ -19,12 +24,24 @@
   padding-bottom: 1.5rem;
   border-bottom: 2px solid #e5e7eb;
 }
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
 
 .title {
   font-size: 1.875rem;
   font-weight: 700;
   color: #2563eb;
   line-height: 1.2;
+}
+@media (max-width: 576px) {
+  .title {
+    font-size: 1.5rem;
+  }
 }
 
 .successMessage {

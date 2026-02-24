@@ -6,6 +6,10 @@
   min-height: 100vh;
   background: linear-gradient(135deg, $primary-500 0%, $accent-500 100%);
   padding: $space-lg;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
 }
 
 .loginpage {
@@ -14,8 +18,17 @@
   @include flex-center;
   flex-direction: column;
 
+  @include respond-max($bp-sm) {
+    max-width: 100%;
+  }
+
   h1 {
     @include heading($fs-3xl, 700, $primary-500);
     margin-bottom: $space-lg;
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-2xl;
+      margin-bottom: $space-md;
+    }
   }
 }

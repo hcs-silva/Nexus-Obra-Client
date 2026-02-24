@@ -1,5 +1,5 @@
-import styles from "../styles/clientlist.module.css";
-import commonStyles from "../styles/common.module.css";
+import styles from "../sass/clientlist.module.scss";
+import commonStyles from "../sass/common.module.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -24,9 +24,9 @@ const ObraList = () => {
     } else {
       const filtered = obras.filter(
         (obra) =>
-          obra.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          obra.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          obra.status.toLowerCase().includes(searchTerm.toLowerCase())
+          obra.obraName.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          obra.obraLocation?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          obra.obraStatus.toLowerCase().includes(searchTerm?.toLowerCase()),
       );
       setFilteredObras(filtered);
     }
@@ -103,17 +103,17 @@ const ObraList = () => {
         <tbody>
           {filteredObras.length === 0 ? (
             <tr>
-              <td colSpan={5} style={{ textAlign: "center" }}>
+              <td colSpan={5} className={styles.centerCell}>
                 Nenhuma obra encontrada
               </td>
             </tr>
           ) : (
             filteredObras.map((obra) => (
               <tr key={obra._id}>
-                <td>{obra.name}</td>
-                <td>{obra.location || "N/A"}</td>
-                <td>{getStatusLabel(obra.status)}</td>
-                <td>€{obra.totalExpenses.toFixed(2)}</td>
+                <td>{obra.obraName}</td>
+                <td>{obra.obraLocation || "N/A"}</td>
+                <td>{getStatusLabel(obra.obraStatus)}</td>
+                <td>€{(obra.totalExpenses ?? 0).toFixed(2)}</td>
                 <td>
                   <button
                     className={styles.editBtn}
@@ -128,9 +128,8 @@ const ObraList = () => {
                     Gerir
                   </button>
                   <button
-                    className={styles.editBtn}
+                    className={`${styles.editBtn} ${styles.spacedActionBtn}`}
                     onClick={() => handleDelete(obra._id!)}
-                    style={{ marginLeft: "5px" }}
                   >
                     Apagar
                   </button>

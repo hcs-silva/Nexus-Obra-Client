@@ -10,24 +10,57 @@
   box-shadow: $shadow-md;
   margin-bottom: $space-lg;
   width: 100%;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
 }
 
 .header {
   @include flex-between;
   margin-bottom: $space-lg;
 
+  @include respond-max($bp-md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-sm;
+  }
+
   h2 {
     @include heading($fs-2xl, 700, $gray-900);
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-xl;
+    }
   }
 }
 
 .title {
   @include heading($fs-3xl, 700, $primary-500);
+
+  @include mobile-xs {
+    font-size: $fs-2xl;
+  }
+
+  @include desktop-2xl {
+    font-size: $fs-4xl;
+  }
 }
 
 .table {
   @include table-base;
   width: 100%;
+
+  @include desktop-2xl {
+    th,
+    td {
+      padding: $space-lg;
+    }
+  }
+
+  @include respond-max($bp-md) {
+    min-width: 720px;
+  }
 
   th {
     background: $primary-50;
@@ -48,18 +81,39 @@
   display: flex;
   gap: $space-sm;
   justify-content: center;
+
+  @include respond-max($bp-sm) {
+    flex-wrap: wrap;
+  }
 }
 
 .editBtn {
   @include button-primary;
   padding: $space-sm $space-md;
   font-size: $fs-small;
+
+  @include mobile-xs {
+    width: 100%;
+    margin-bottom: $space-xs;
+  }
 }
 
 .deleteBtn {
   @include button-danger;
   padding: $space-sm $space-md;
   font-size: $fs-small;
+}
+
+.centerCell {
+  text-align: center;
+}
+
+.spacedActionBtn {
+  margin-left: 5px;
+
+  @include mobile-xs {
+    margin-left: 0;
+  }
 }
 
 .emptyState {
