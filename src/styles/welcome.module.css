@@ -8,6 +8,12 @@
   gap: 3rem;
   padding: 1.5rem;
 }
+@media (max-width: 576px) {
+  .container {
+    gap: 1.5rem;
+    padding: 1rem;
+  }
+}
 
 .welcomePage {
   width: 100%;
@@ -19,6 +25,12 @@
   padding: 3rem;
   gap: 1.5rem;
 }
+@media (max-width: 576px) {
+  .welcomePage {
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+}
 .welcomePage h1 {
   font-size: 1.875rem;
   font-weight: 800;
@@ -26,10 +38,20 @@
   line-height: 1.2;
   text-align: center;
 }
+@media (max-width: 576px) {
+  .welcomePage h1 {
+    font-size: 1.5rem;
+  }
+}
 .welcomePage p {
   color: #4b5563;
   text-align: center;
   font-size: 1.125rem;
+}
+@media (max-width: 576px) {
+  .welcomePage p {
+    font-size: 1rem;
+  }
 }
 
 .actions {
@@ -37,6 +59,14 @@
   gap: 1.5rem;
   justify-content: center;
   flex-wrap: wrap;
+}
+@media (max-width: 576px) {
+  .actions {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
 }
 
 .btnPrimary {
@@ -66,6 +96,11 @@
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
 }
+@media (max-width: 576px) {
+  .btnPrimary {
+    width: 100%;
+  }
+}
 
 .btnSecondary {
   border: none;
@@ -91,6 +126,11 @@
 }
 .btnSecondary:hover:not(:disabled) {
   background-color: #eaf6fb;
+}
+@media (max-width: 576px) {
+  .btnSecondary {
+    width: 100%;
+  }
 }
 
 /*# sourceMappingURL=welcome.module.css.map */

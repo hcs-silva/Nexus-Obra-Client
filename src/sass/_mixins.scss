@@ -17,7 +17,49 @@
 @mixin flex-col {
   display: flex;
   flex-direction: column;
-  
+}
+
+// Responsive Utilities
+@mixin respond-max($breakpoint) {
+  @media (max-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin respond-min($breakpoint) {
+  @media (min-width: $breakpoint) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @include respond-max($bp-md) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $bp-md) and (max-width: $bp-lg) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @include respond-min($bp-lg) {
+    @content;
+  }
+}
+
+@mixin mobile-xs {
+  @include respond-max(360px) {
+    @content;
+  }
+}
+
+@mixin desktop-2xl {
+  @include respond-min($bp-2xl) {
+    @content;
+  }
 }
 
 // Typography

@@ -1,5 +1,5 @@
-import styles from "../styles/clientlist.module.css";
-import commonStyles from "../styles/common.module.css";
+import styles from "../sass/clientlist.module.scss";
+import commonStyles from "../sass/common.module.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -103,7 +103,7 @@ const ObraList = () => {
         <tbody>
           {filteredObras.length === 0 ? (
             <tr>
-              <td colSpan={5} style={{ textAlign: "center" }}>
+              <td colSpan={5} className={styles.centerCell}>
                 Nenhuma obra encontrada
               </td>
             </tr>
@@ -128,9 +128,8 @@ const ObraList = () => {
                     Gerir
                   </button>
                   <button
-                    className={styles.editBtn}
+                    className={`${styles.editBtn} ${styles.spacedActionBtn}`}
                     onClick={() => handleDelete(obra._id!)}
-                    style={{ marginLeft: "5px" }}
                   >
                     Apagar
                   </button>

@@ -6,6 +6,15 @@
   min-height: 100vh;
   background: $bg-light;
   margin: 15px;
+
+  @include desktop-2xl {
+    margin: $space-lg;
+  }
+
+  @include respond-max($bp-md) {
+    flex-direction: column;
+    margin: $space-sm;
+  }
 }
 
 .sidebar {
@@ -18,11 +27,23 @@
   overflow-y: auto;
   box-shadow: $shadow-lg;
 
+  @include respond-max($bp-md) {
+    width: 100%;
+    position: relative;
+    height: auto;
+    padding: $space-md 0;
+  }
+
   .logo {
     @include heading($fs-2xl, 700, $primary-400);
     padding: 0 $space-lg;
     margin-bottom: $space-2xl;
     text-align: center;
+
+    @include respond-max($bp-md) {
+      margin-bottom: $space-md;
+      font-size: $fs-xl;
+    }
   }
 
   .menu {
@@ -51,6 +72,15 @@
   flex: 1;
   padding: $space-lg;
   overflow-y: auto;
+
+  @include desktop-2xl {
+    padding: $space-xl;
+  }
+
+  @include respond-max($bp-md) {
+    margin-left: 0;
+    padding: $space-md;
+  }
 }
 
 .topbar {
@@ -61,14 +91,36 @@
   @include flex-between;
   box-shadow: $shadow-md;
 
+  @include respond-max($bp-md) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-md;
+    padding: $space-md;
+  }
+
+  @include mobile-xs {
+    padding: $space-sm;
+  }
+
   h1 {
     @include heading($fs-2xl, 700, $gray-900);
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-xl;
+    }
   }
 
   .actions {
     display: flex;
     gap: $space-lg;
     align-items: center;
+
+    @include respond-max($bp-sm) {
+      width: 100%;
+      justify-content: space-between;
+      gap: $space-sm;
+      flex-wrap: wrap;
+    }
   }
 
   .upgradeBadge {
@@ -84,10 +136,35 @@
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: $space-lg;
   margin-bottom: $space-lg;
+
+  @include respond-max($bp-md) {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: $space-md;
+  }
+
+  @include respond-max($bp-sm) {
+    grid-template-columns: 1fr;
+  }
+
+  @include desktop-2xl {
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  }
 }
 
 .card {
   @include card;
+
+  @include desktop-2xl {
+    padding: $space-xl;
+  }
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
+
+  @include mobile-xs {
+    padding: $space-sm;
+  }
 
   .cardHeader {
     @include flex-between;
@@ -105,6 +182,14 @@
   .kpiValue {
     @include heading($fs-4xl, 800, $primary-500);
     margin: $space-md 0;
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-3xl;
+    }
+
+    @include mobile-xs {
+      font-size: $fs-2xl;
+    }
   }
 
   .kpiLabel {
@@ -164,6 +249,10 @@
   cursor: pointer;
   transition: all $transition-base;
   background: white;
+
+  @include respond-max($bp-sm) {
+    padding: $space-lg;
+  }
 
   &:hover {
     border-color: $primary-500;

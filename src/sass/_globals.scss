@@ -27,10 +27,22 @@
 // Typography
 :global(h1) {
   @include heading($fs-4xl, 700, $gray-900);
+
+  @include respond-max($bp-md) {
+    font-size: $fs-3xl;
+  }
+
+  @include respond-max($bp-sm) {
+    font-size: $fs-2xl;
+  }
 }
 
 :global(h2) {
   @include heading($fs-3xl, 700, $gray-900);
+
+  @include respond-max($bp-sm) {
+    font-size: $fs-2xl;
+  }
 }
 
 :global(h3) {
@@ -124,6 +136,14 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 $space-lg;
+
+  @include respond-max($bp-lg) {
+    padding: 0 $space-md;
+  }
+
+  @include respond-max($bp-sm) {
+    padding: 0 $space-sm;
+  }
 }
 
 :global(.text-center) {

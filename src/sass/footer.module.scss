@@ -7,13 +7,25 @@
   color: white;
   padding: $space-2xl;
   width: 100%;
-  
+
   text-align: center;
   border-top: 1px solid $gray-800;
+
+  @include respond-max($bp-md) {
+    padding: $space-lg;
+  }
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
 
   h3 {
     @include heading($fs-xl, 600, white);
     margin-bottom: $space-md;
+
+    @include respond-max($bp-sm) {
+      font-size: $fs-lg;
+    }
   }
 
   p {

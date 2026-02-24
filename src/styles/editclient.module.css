@@ -4,6 +4,11 @@
   color: #2563eb;
   line-height: 1.2;
 }
+@media (max-width: 576px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
 
 .container {
   display: flex;
@@ -16,6 +21,11 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   margin-bottom: 1.5rem;
   width: 100%;
+}
+@media (max-width: 576px) {
+  .container {
+    padding: 1rem;
+  }
 }
 
 .deleteBtn {
