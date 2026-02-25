@@ -127,8 +127,8 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route path="/allobras" element={<ProtectedRoute><ObraList /></ProtectedRoute>}></Route>
-            <Route path="/addobra" element={<ProtectedRoute><CreateObra /></ProtectedRoute>}></Route>
+            <Route path="/:clientId/allobras" element={<ProtectedRoute><ObraList /></ProtectedRoute>}></Route>
+            <Route path="/:clientId/addobra" element={<ProtectedRoute><CreateObra /></ProtectedRoute>}></Route>
             <Route path="/editobra/:obraId" element={<ProtectedRoute><EditObra /></ProtectedRoute>}></Route>
             <Route path="/manageobra/:obraId" element={<ProtectedRoute><ManageObra /></ProtectedRoute>}></Route>
           </Routes>

@@ -2,9 +2,10 @@ import styles from "../sass/clientlist.module.scss";
 import commonStyles from "../sass/common.module.scss";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
+import { useAuth } from "../hooks/useAuth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
 
@@ -13,6 +14,11 @@ const ObraList = () => {
   const [obras, setObras] = useState<Obra[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredObras, setFilteredObras] = useState<Obra[]>([]);
+
+  const {user} = useAuth();
+ 
+
+
 
   useEffect(() => {
     fetchObras();
@@ -62,7 +68,7 @@ const ObraList = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
@@ -147,7 +153,7 @@ const ObraList = () => {
           Voltar
         </button>
         <button
-          onClick={() => nav("/addobra")}
+          onClick={() => nav(`/${user?.clientId}/addobra`)}
           className={commonStyles.submitBtn}
         >
           Adicionar Obra

@@ -25,7 +25,7 @@ export interface Obra {
   obraLocation?: string;
   startDate?: Date;
   endDate?: Date;
-  obraStatus: 'planned' | 'in-progress' | 'completed' | 'cancelled';
+  obraStatus: 'planning' | 'in-progress' | 'completed' | 'on-hold';
   cadernoEncargos?: CadernoEncargos;
   faturas: Fatura[];
   totalExpenses: number;
