@@ -16,9 +16,7 @@ const ClientList = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/clients/`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+      .get(`${BACKEND_URL}/clients/`)
       .then((response) => {
         const responseClients = Array.isArray(response.data)
           ? response.data

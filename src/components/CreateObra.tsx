@@ -1,11 +1,11 @@
 import styles from "../sass/createclient.module.scss";
 import commonStyles from "../styles/common.module.css";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import { BACKEND_URL } from "../config";
+import { uploadToCloudinary } from "../api/cloudinaryUpload";
 
 const CreateObra = () => {
   const nav = useNavigate();
@@ -14,9 +14,12 @@ const CreateObra = () => {
   const [location, setLocation] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState<"planned" | "in-progress" | "completed" | "cancelled">("planned");
+  const [status, setStatus] = useState<
+    "planning" | "in-progress" | "completed" | "on-hold"
+  >("planning");
   const [cadernoFile, setCadernoFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const { clientId } = useParams<{ clientId: string }>();
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -26,7 +29,10 @@ const CreateObra = () => {
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       ];
-      if (!validTypes.includes(file.type) && !file.name.match(/\.(xls|xlsx)$/i)) {
+      if (
+        !validTypes.includes(file.type) &&
+        !file.name.match(/\.(xls|xlsx)$/i)
+      ) {
         toast.error("Please upload a valid .xls or .xlsx file");
         return;
       }
@@ -41,20 +47,12 @@ const CreateObra = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("file", cadernoFile);
-    formData.append("upload_preset", "ml_default");
-    formData.append("resource_type", "raw");
-
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dzdrwiugn/raw/upload",
-        formData
-      );
+      const fileUrl = await uploadToCloudinary(cadernoFile, "raw");
 
       return {
         fileName: cadernoFile.name,
-        fileUrl: response.data.secure_url,
+        fileUrl,
         uploadDate: new Date(),
       };
     } catch (error) {
@@ -66,7 +64,7 @@ const CreateObra = () => {
     }
   };
 
-  const handleCreateObra = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleCreateObra = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Validate required fields
@@ -76,7 +74,6 @@ const CreateObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       let cadernoEncargos = null;
 
       // Upload caderno if file is selected
@@ -87,23 +84,18 @@ const CreateObra = () => {
         }
       }
 
-      await axios.post(
-        `${BACKEND_URL}/obras/`,
-        {
-          name: name.trim(),
-          description: description.trim(),
-          location: location.trim(),
-          startDate: startDate ? new Date(startDate) : undefined,
-          endDate: endDate ? new Date(endDate) : undefined,
-          status,
-          cadernoEncargos,
-          faturas: [],
-          totalExpenses: 0,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.post(`${BACKEND_URL}/obras/createObra`, {
+        obraName: name.trim(),
+        obraDescription: description.trim(),
+        obraLocation: location.trim(),
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+        obraStatus: status,
+        cadernoEncargos,
+        faturas: [],
+        totalExpenses: 0,
+        clientId: clientId || "", // Associate obra with client
+      });
 
       toast.success("Obra criada com sucesso!");
 
@@ -113,7 +105,7 @@ const CreateObra = () => {
       setLocation("");
       setStartDate("");
       setEndDate("");
-      setStatus("planned");
+      setStatus("planning");
       setCadernoFile(null);
 
       // Navigate back after a short delay
@@ -177,12 +169,20 @@ const CreateObra = () => {
           Estado:
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value as "planned" | "in-progress" | "completed" | "cancelled")}
+            onChange={(e) =>
+              setStatus(
+                e.target.value as
+                  | "planning"
+                  | "in-progress"
+                  | "completed"
+                  | "on-hold",
+              )
+            }
           >
-            <option value="planned">Planeada</option>
+            <option value="planning">Planeada</option>
             <option value="in-progress">Em Progresso</option>
             <option value="completed">Concluída</option>
-            <option value="cancelled">Cancelada</option>
+            <option value="on-hold">Em Espera</option>
           </select>
         </label>
         <label>
@@ -193,7 +193,7 @@ const CreateObra = () => {
             onChange={handleFileChange}
           />
           {cadernoFile && (
-            <p style={{ fontSize: "0.9em", marginTop: "5px" }}>
+            <p className={styles.fileHint}>
               Ficheiro selecionado: {cadernoFile.name}
             </p>
           )}

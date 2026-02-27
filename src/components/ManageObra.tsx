@@ -15,7 +15,7 @@ const ManageObra = () => {
   const [loading, setLoading] = useState(true);
   const [obra, setObra] = useState<Obra | null>(null);
   const [showAddFatura, setShowAddFatura] = useState(false);
-  
+
   // Fatura form state
   const [faturaDescription, setFaturaDescription] = useState("");
   const [faturaAmount, setFaturaAmount] = useState("");
@@ -29,9 +29,7 @@ const ManageObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
       setObra(response.data);
       setLoading(false);
     } catch (error) {
@@ -56,7 +54,6 @@ const ManageObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       const newFatura: Omit<Fatura, "_id"> = {
         description: faturaDescription.trim(),
         amount,
@@ -64,23 +61,17 @@ const ManageObra = () => {
         category: faturaCategory.trim() || undefined,
       };
 
-      await axios.post(
-        `${BACKEND_URL}/obras/${obraId}/faturas`,
-        newFatura,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.post(`${BACKEND_URL}/obras/${obraId}/faturas`, newFatura);
 
       toast.success("Fatura adicionada com sucesso!");
-      
+
       // Reset form
       setFaturaDescription("");
       setFaturaAmount("");
       setFaturaDate("");
       setFaturaCategory("");
       setShowAddFatura(false);
-      
+
       // Refresh obra data
       fetchObra();
     } catch (error: unknown) {
@@ -97,13 +88,7 @@ const ManageObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(
-        `${BACKEND_URL}/obras/${obraId}/faturas/${faturaId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.delete(`${BACKEND_URL}/obras/${obraId}/faturas/${faturaId}`);
 
       toast.success("Fatura apagada com sucesso!");
       fetchObra();
@@ -133,32 +118,50 @@ const ManageObra = () => {
 
   return (
     <div className={styles.createClientWrapper}>
-      <h1 className={styles.title}>Gerir Obra: {obra.name}</h1>
-      
-      <div style={{ marginBottom: "20px" }}>
+      <h1 className={styles.title}>Gerir Obra: {obra.obraName}</h1>
+
+      <div className={styles.sectionSpacing}>
         <h2>Detalhes da Obra</h2>
-        <p><strong>Nome:</strong> {obra.name}</p>
-        <p><strong>Descrição:</strong> {obra.description || "N/A"}</p>
-        <p><strong>Localização:</strong> {obra.location || "N/A"}</p>
-        <p><strong>Estado:</strong> {getStatusLabel(obra.status)}</p>
+        <p>
+          <strong>Nome:</strong> {obra.obraName}
+        </p>
+        <p>
+          <strong>Descrição:</strong> {obra.obraDescription || "N/A"}
+        </p>
+        <p>
+          <strong>Localização:</strong> {obra.obraLocation || "N/A"}
+        </p>
+        <p>
+          <strong>Estado:</strong> {getStatusLabel(obra.obraStatus)}
+        </p>
         {obra.startDate && (
-          <p><strong>Data de Início:</strong> {new Date(obra.startDate).toLocaleDateString()}</p>
+          <p>
+            <strong>Data de Início:</strong>{" "}
+            {new Date(obra.startDate).toLocaleDateString()}
+          </p>
         )}
         {obra.endDate && (
-          <p><strong>Data de Fim:</strong> {new Date(obra.endDate).toLocaleDateString()}</p>
+          <p>
+            <strong>Data de Fim:</strong>{" "}
+            {new Date(obra.endDate).toLocaleDateString()}
+          </p>
         )}
         {obra.cadernoEncargos && (
           <p>
             <strong>Caderno de Encargos:</strong>{" "}
-            <a href={obra.cadernoEncargos.fileUrl} target="_blank" rel="noopener noreferrer">
+            <a
+              href={obra.cadernoEncargos.fileUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               {obra.cadernoEncargos.fileName}
             </a>
           </p>
         )}
       </div>
 
-      <div style={{ marginBottom: "20px" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div className={styles.sectionSpacing}>
+        <div className={styles.sectionHeader}>
           <h2>Faturas</h2>
           <button
             onClick={() => setShowAddFatura(!showAddFatura)}
@@ -169,7 +172,10 @@ const ManageObra = () => {
         </div>
 
         {showAddFatura && (
-          <form className={commonStyles.form} onSubmit={handleAddFatura} style={{ marginTop: "15px" }}>
+          <form
+            className={`${commonStyles.form} ${styles.formTopSpacing}`}
+            onSubmit={handleAddFatura}
+          >
             <label>
               Descrição:*
               <input
@@ -213,7 +219,7 @@ const ManageObra = () => {
           </form>
         )}
 
-        <table className={tableStyles.table} style={{ marginTop: "15px" }}>
+        <table className={`${tableStyles.table} ${styles.tableTopSpacing}`}>
           <thead>
             <tr>
               <th>Descrição</th>
@@ -226,7 +232,7 @@ const ManageObra = () => {
           <tbody>
             {obra.faturas.length === 0 ? (
               <tr>
-                <td colSpan={5} style={{ textAlign: "center" }}>
+                <td colSpan={5} className={styles.centerCell}>
                   Nenhuma fatura adicionada
                 </td>
               </tr>
@@ -240,8 +246,7 @@ const ManageObra = () => {
                   <td>
                     <button
                       onClick={() => handleDeleteFatura(fatura._id!)}
-                      className={commonStyles.cancelBtn}
-                      style={{ padding: "5px 10px" }}
+                      className={`${commonStyles.cancelBtn} ${styles.compactActionBtn}`}
                     >
                       Apagar
                     </button>
@@ -252,7 +257,7 @@ const ManageObra = () => {
           </tbody>
         </table>
 
-        <div style={{ marginTop: "15px", textAlign: "right" }}>
+        <div className={styles.totalsRow}>
           <h3>Total de Despesas: €{obra.totalExpenses.toFixed(2)}</h3>
         </div>
       </div>

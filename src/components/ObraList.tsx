@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
+import { useAuth } from "../hooks/useAuth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
 
@@ -13,6 +14,8 @@ const ObraList = () => {
   const [obras, setObras] = useState<Obra[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredObras, setFilteredObras] = useState<Obra[]>([]);
+
+  const { user } = useAuth();
 
   useEffect(() => {
     fetchObras();
@@ -25,7 +28,9 @@ const ObraList = () => {
       const filtered = obras.filter(
         (obra) =>
           obra.obraName.toLowerCase().includes(searchTerm?.toLowerCase()) ||
-          obra.obraLocation?.toLowerCase().includes(searchTerm?.toLowerCase()) ||
+          obra.obraLocation
+            ?.toLowerCase()
+            .includes(searchTerm?.toLowerCase()) ||
           obra.obraStatus.toLowerCase().includes(searchTerm?.toLowerCase()),
       );
       setFilteredObras(filtered);
@@ -34,9 +39,7 @@ const ObraList = () => {
 
   const fetchObras = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(`${BACKEND_URL}/obras/`);
       setObras(response.data);
       setFilteredObras(response.data);
     } catch (error) {
@@ -51,9 +54,7 @@ const ObraList = () => {
     }
 
     try {
-      await axios.delete(`${BACKEND_URL}/obras/${obraId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      await axios.delete(`${BACKEND_URL}/obras/${obraId}`);
       toast.success("Obra deleted successfully");
       fetchObras();
     } catch (error) {
@@ -62,7 +63,7 @@ const ObraList = () => {
     }
   };
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
 
@@ -147,7 +148,9 @@ const ObraList = () => {
           Voltar
         </button>
         <button
-          onClick={() => nav("/addobra")}
+          onClick={() =>
+            nav(user?.clientId ? `/${user.clientId}/addobra` : "/addobra")
+          }
           className={commonStyles.submitBtn}
         >
           Adicionar Obra

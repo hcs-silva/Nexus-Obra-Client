@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
+import { uploadToCloudinary } from "../api/cloudinaryUpload";
 
 const CreateClient = () => {
   const nav = useNavigate();
@@ -37,20 +38,12 @@ const CreateClient = () => {
     const finalLogoUrl = uploadedUrl || DEFAULT_CLIENT_LOGO;
 
     try {
-      const token = localStorage.getItem("token");
-
-      await axios.post(
-        `${BACKEND_URL}/clients/createClient`,
-        {
-          clientName: clientName.trim(),
-          adminUsername: adminUsername.trim(),
-          adminPassword: adminPassword,
-          clientLogo: finalLogoUrl,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await axios.post(`${BACKEND_URL}/clients/createClient`, {
+        clientName: clientName.trim(),
+        adminUsername: adminUsername.trim(),
+        adminPassword: adminPassword,
+        clientLogo: finalLogoUrl,
+      });
 
       toast.success("Client created successfully!");
 
@@ -86,17 +79,8 @@ const CreateClient = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("file", imageFile);
-    formData.append("upload_preset", "ml_default"); // Cloudinary upload preset
-
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dzdrwiugn/image/upload",
-        formData,
-      );
-
-      return response.data.secure_url;
+      return await uploadToCloudinary(imageFile, "image");
     } catch (error: unknown) {
       const errorMessage =
         (error as { response?: { data?: { message?: string } } })?.response

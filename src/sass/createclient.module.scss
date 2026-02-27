@@ -56,6 +56,47 @@
   animation: spin 0.8s linear infinite;
 }
 
+.fileHint {
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.fileHintBottom {
+  font-size: 0.9em;
+  margin-bottom: 5px;
+}
+
+.sectionSpacing {
+  margin-bottom: 20px;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.formTopSpacing {
+  margin-top: 15px;
+}
+
+.tableTopSpacing {
+  margin-top: 15px;
+}
+
+.centerCell {
+  text-align: center;
+}
+
+.compactActionBtn {
+  padding: 5px 10px;
+}
+
+.totalsRow {
+  margin-top: 15px;
+  text-align: right;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);

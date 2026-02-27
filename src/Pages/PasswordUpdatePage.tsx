@@ -7,8 +7,6 @@ import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
 
-
-
 const PasswordUpdatePage = () => {
   const { userId } = useParams();
   const [newPassword, setNewPassword] = useState("");
@@ -32,13 +30,9 @@ const PasswordUpdatePage = () => {
         return;
       }
 
-      await axios.patch(
-        `${BACKEND_URL}/users/resetpassword/${userId}`,
-        { newPassword },
-        {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        }
-      );
+      await axios.patch(`${BACKEND_URL}/users/resetpassword/${userId}`, {
+        newPassword,
+      });
 
       toast.success("Password updated successfully!");
       setNewPassword("");
@@ -53,12 +47,13 @@ const PasswordUpdatePage = () => {
         }
       }, 1500);
     } catch (error: unknown) {
-      const errorMessage = (error as { response?: { data?: { message?: string } } })?.response?.data?.message || "Failed to update password. Please try again.";
+      const errorMessage =
+        (error as { response?: { data?: { message?: string } } })?.response
+          ?.data?.message || "Failed to update password. Please try again.";
       toast.error(errorMessage);
     }
   }
 
-  
   return (
     <div className={styles.passwordUpdatePage}>
       <h1>Password Update Page</h1>

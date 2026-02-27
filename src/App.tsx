@@ -22,14 +22,13 @@ import BuildList from "./components/BuildList";
 import QuotationList from "./components/QuotationList";
 
 function App() {
-  const { logout } = useAuth();
+  const { logout, isLoggedIn } = useAuth();
 
   // Logout on window close
   useEffect(() => {
     const handleBeforeUnload = () => {
       // Only logout if user is logged in
-      const token = localStorage.getItem("token");
-      if (token) {
+      if (isLoggedIn) {
         logout();
       }
     };
@@ -41,7 +40,7 @@ function App() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("unload", handleBeforeUnload);
     };
-  }, [logout]);
+  }, [isLoggedIn, logout]);
 
   return (
     <div className={styles.layout}>
@@ -127,10 +126,54 @@ function App() {
                 </ProtectedRoute>
               }
             ></Route>
-            <Route path="/allobras" element={<ProtectedRoute><ObraList /></ProtectedRoute>}></Route>
-            <Route path="/addobra" element={<ProtectedRoute><CreateObra /></ProtectedRoute>}></Route>
-            <Route path="/editobra/:obraId" element={<ProtectedRoute><EditObra /></ProtectedRoute>}></Route>
-            <Route path="/manageobra/:obraId" element={<ProtectedRoute><ManageObra /></ProtectedRoute>}></Route>
+            <Route
+              path="/allobras"
+              element={
+                <ProtectedRoute>
+                  <ObraList />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/addobra"
+              element={
+                <ProtectedRoute>
+                  <CreateObra />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/:clientId/allobras"
+              element={
+                <ProtectedRoute>
+                  <ObraList />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/:clientId/addobra"
+              element={
+                <ProtectedRoute>
+                  <CreateObra />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/editobra/:obraId"
+              element={
+                <ProtectedRoute>
+                  <EditObra />
+                </ProtectedRoute>
+              }
+            ></Route>
+            <Route
+              path="/manageobra/:obraId"
+              element={
+                <ProtectedRoute>
+                  <ManageObra />
+                </ProtectedRoute>
+              }
+            ></Route>
           </Routes>
         </main>
         <Footer />

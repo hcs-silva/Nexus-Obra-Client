@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import { BACKEND_URL } from "../config";
+import { uploadToCloudinary } from "../api/cloudinaryUpload";
 
 const EditObra = () => {
   const nav = useNavigate();
@@ -17,7 +17,9 @@ const EditObra = () => {
   const [location, setLocation] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [status, setStatus] = useState<"planned" | "in-progress" | "completed" | "cancelled">("planned");
+  const [status, setStatus] = useState<
+    "planning" | "in-progress" | "completed" | "on-hold"
+  >("planning");
   const [cadernoFile, setCadernoFile] = useState<File | null>(null);
   const [existingCaderno, setExistingCaderno] = useState<string>("");
   const [uploading, setUploading] = useState(false);
@@ -29,16 +31,20 @@ const EditObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
       const obra: Obra = response.data;
       setName(obra.obraName);
-      setDescription(obra.description || "");
-      setLocation(obra.location || "");
-      setStartDate(obra.startDate ? new Date(obra.startDate).toISOString().split("T")[0] : "");
-      setEndDate(obra.endDate ? new Date(obra.endDate).toISOString().split("T")[0] : "");
-      setStatus(obra.status);
+      setDescription(obra.obraDescription || "");
+      setLocation(obra.obraLocation || "");
+      setStartDate(
+        obra.startDate
+          ? new Date(obra.startDate).toISOString().split("T")[0]
+          : "",
+      );
+      setEndDate(
+        obra.endDate ? new Date(obra.endDate).toISOString().split("T")[0] : "",
+      );
+      setStatus(obra.obraStatus);
       setExistingCaderno(obra.cadernoEncargos?.fileName || "");
       setLoading(false);
     } catch (error) {
@@ -55,7 +61,10 @@ const EditObra = () => {
         "application/vnd.ms-excel",
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
       ];
-      if (!validTypes.includes(file.type) && !file.name.match(/\.(xls|xlsx)$/i)) {
+      if (
+        !validTypes.includes(file.type) &&
+        !file.name.match(/\.(xls|xlsx)$/i)
+      ) {
         toast.error("Please upload a valid .xls or .xlsx file");
         return;
       }
@@ -70,20 +79,12 @@ const EditObra = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("file", cadernoFile);
-    formData.append("upload_preset", "ml_default");
-    formData.append("resource_type", "raw");
-
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dzdrwiugn/raw/upload",
-        formData
-      );
+      const fileUrl = await uploadToCloudinary(cadernoFile, "raw");
 
       return {
         fileName: cadernoFile.name,
-        fileUrl: response.data.secure_url,
+        fileUrl,
         uploadDate: new Date(),
       };
     } catch (error) {
@@ -104,7 +105,6 @@ const EditObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       let cadernoEncargos = undefined;
 
       // Upload new caderno if file is selected
@@ -117,24 +117,18 @@ const EditObra = () => {
 
       const updateData: Partial<Obra> = {
         obraName: name.trim(),
-        description: description.trim(),
-        location: location.trim(),
+        obraDescription: description.trim(),
+        obraLocation: location.trim(),
         startDate: startDate ? new Date(startDate) : undefined,
         endDate: endDate ? new Date(endDate) : undefined,
-        status,
+        obraStatus: status,
       };
 
       if (cadernoEncargos) {
         updateData.cadernoEncargos = cadernoEncargos;
       }
 
-      await axios.patch(
-        `${BACKEND_URL}/obras/${obraId}`,
-        updateData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.patch(`${BACKEND_URL}/obras/${obraId}`, updateData);
 
       toast.success("Obra atualizada com sucesso!");
 
@@ -202,18 +196,26 @@ const EditObra = () => {
           Estado:
           <select
             value={status}
-            onChange={(e) => setStatus(e.target.value as "planned" | "in-progress" | "completed" | "cancelled")}
+            onChange={(e) =>
+              setStatus(
+                e.target.value as
+                  | "planning"
+                  | "in-progress"
+                  | "completed"
+                  | "on-hold",
+              )
+            }
           >
-            <option value="planned">Planeada</option>
+            <option value="planning">Planeada</option>
             <option value="in-progress">Em Progresso</option>
             <option value="completed">Concluída</option>
-            <option value="cancelled">Cancelada</option>
+            <option value="on-hold">Em Espera</option>
           </select>
         </label>
         <label>
           Caderno de Encargos (.xls/.xlsx):
           {existingCaderno && (
-            <p style={{ fontSize: "0.9em", marginBottom: "5px" }}>
+            <p className={styles.fileHintBottom}>
               Ficheiro atual: {existingCaderno}
             </p>
           )}
@@ -223,7 +225,7 @@ const EditObra = () => {
             onChange={handleFileChange}
           />
           {cadernoFile && (
-            <p style={{ fontSize: "0.9em", marginTop: "5px" }}>
+            <p className={styles.fileHint}>
               Novo ficheiro selecionado: {cadernoFile.name}
             </p>
           )}
