@@ -6,7 +6,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
 
-
 const EditClient = () => {
   const { clientId } = useParams<{ clientId: string }>();
 
@@ -21,9 +20,7 @@ const EditClient = () => {
 
   useEffect(() => {
     axios
-      .get(`${BACKEND_URL}/clients/${clientId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+      .get(`${BACKEND_URL}/clients/${clientId}`)
       .then((response) => {
         // Handle the response data here
         console.log("Fetched client:", response.data);
@@ -52,13 +49,11 @@ const EditClient = () => {
     e.preventDefault();
 
     try {
-      axios.patch(`${BACKEND_URL}/clients/${clientId}`, formData, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      axios.patch(`${BACKEND_URL}/clients/${clientId}`, formData);
 
       toast.success("Client updated successfully!");
       nav("/allclients");
-      
+
       // Optionally, show a success message or redirect the user
     } catch (error) {
       console.log("Error updating client:", error);
@@ -66,9 +61,8 @@ const EditClient = () => {
   };
 
   const handleDelete = () => {
-    axios.delete(`${BACKEND_URL}/clients/${clientId}`, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
+    axios
+      .delete(`${BACKEND_URL}/clients/${clientId}`)
       .then(() => {
         toast.success("Client deleted successfully!");
         nav("/allclients");
@@ -130,7 +124,9 @@ const EditClient = () => {
           Save Changes
         </button>
       </form>
-      <button className={styles.deleteBtn} onClick = {handleDelete}>Delete Client</button>
+      <button className={styles.deleteBtn} onClick={handleDelete}>
+        Delete Client
+      </button>
     </div>
   );
 };

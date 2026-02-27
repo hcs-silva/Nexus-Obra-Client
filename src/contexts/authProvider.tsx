@@ -5,7 +5,6 @@ import type { User } from "../types/auth";
 import { AuthContext } from "./authContext";
 import { BACKEND_URL } from "../config";
 
-
 interface AuthProviderProps {
   children: ReactNode;
 }
@@ -39,7 +38,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         password,
       });
 
-      localStorage.setItem("token", response.data.authToken);
       localStorage.setItem("userId", response.data.userId);
       setIsLoggedIn(true);
       const userObj = {
@@ -63,7 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    axios.post(`${BACKEND_URL}/users/logout`).catch(() => undefined);
     localStorage.removeItem("userId");
     localStorage.removeItem("user");
     setIsLoggedIn(false);

@@ -4,8 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import { BACKEND_URL } from "../config";
+import { uploadToCloudinary } from "../api/cloudinaryUpload";
 
 const CreateObra = () => {
   const nav = useNavigate();
@@ -47,20 +47,12 @@ const CreateObra = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("file", cadernoFile);
-    formData.append("upload_preset", "ml_default");
-    formData.append("resource_type", "raw");
-
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dzdrwiugn/raw/upload",
-        formData,
-      );
+      const fileUrl = await uploadToCloudinary(cadernoFile, "raw");
 
       return {
         fileName: cadernoFile.name,
-        fileUrl: response.data.secure_url,
+        fileUrl,
         uploadDate: new Date(),
       };
     } catch (error) {
@@ -82,7 +74,6 @@ const CreateObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       let cadernoEncargos = null;
 
       // Upload caderno if file is selected
@@ -93,24 +84,18 @@ const CreateObra = () => {
         }
       }
 
-      await axios.post(
-        `${BACKEND_URL}/obras/createObra`,
-        {
-          obraName: name.trim(),
-          obraDescription: description.trim(),
-          obraLocation: location.trim(),
-          startDate: startDate ? new Date(startDate) : undefined,
-          endDate: endDate ? new Date(endDate) : undefined,
-          obraStatus: status,
-          cadernoEncargos,
-          faturas: [],
-          totalExpenses: 0,
-          clientId: clientId || "", // Associate obra with client
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        },
-      );
+      await axios.post(`${BACKEND_URL}/obras/createObra`, {
+        obraName: name.trim(),
+        obraDescription: description.trim(),
+        obraLocation: location.trim(),
+        startDate: startDate ? new Date(startDate) : undefined,
+        endDate: endDate ? new Date(endDate) : undefined,
+        obraStatus: status,
+        cadernoEncargos,
+        faturas: [],
+        totalExpenses: 0,
+        clientId: clientId || "", // Associate obra with client
+      });
 
       toast.success("Obra criada com sucesso!");
 

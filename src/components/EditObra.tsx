@@ -5,8 +5,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import { BACKEND_URL } from "../config";
+import { uploadToCloudinary } from "../api/cloudinaryUpload";
 
 const EditObra = () => {
   const nav = useNavigate();
@@ -31,9 +31,7 @@ const EditObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
       const obra: Obra = response.data;
       setName(obra.obraName);
       setDescription(obra.obraDescription || "");
@@ -81,20 +79,12 @@ const EditObra = () => {
 
     setUploading(true);
 
-    const formData = new FormData();
-    formData.append("file", cadernoFile);
-    formData.append("upload_preset", "ml_default");
-    formData.append("resource_type", "raw");
-
     try {
-      const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dzdrwiugn/raw/upload",
-        formData,
-      );
+      const fileUrl = await uploadToCloudinary(cadernoFile, "raw");
 
       return {
         fileName: cadernoFile.name,
-        fileUrl: response.data.secure_url,
+        fileUrl,
         uploadDate: new Date(),
       };
     } catch (error) {
@@ -115,7 +105,6 @@ const EditObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       let cadernoEncargos = undefined;
 
       // Upload new caderno if file is selected
@@ -139,9 +128,7 @@ const EditObra = () => {
         updateData.cadernoEncargos = cadernoEncargos;
       }
 
-      await axios.patch(`${BACKEND_URL}/obras/${obraId}`, updateData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.patch(`${BACKEND_URL}/obras/${obraId}`, updateData);
 
       toast.success("Obra atualizada com sucesso!");
 

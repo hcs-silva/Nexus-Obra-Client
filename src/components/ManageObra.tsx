@@ -29,9 +29,7 @@ const ManageObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
       setObra(response.data);
       setLoading(false);
     } catch (error) {
@@ -56,7 +54,6 @@ const ManageObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
       const newFatura: Omit<Fatura, "_id"> = {
         description: faturaDescription.trim(),
         amount,
@@ -64,9 +61,7 @@ const ManageObra = () => {
         category: faturaCategory.trim() || undefined,
       };
 
-      await axios.post(`${BACKEND_URL}/obras/${obraId}/faturas`, newFatura, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post(`${BACKEND_URL}/obras/${obraId}/faturas`, newFatura);
 
       toast.success("Fatura adicionada com sucesso!");
 
@@ -93,10 +88,7 @@ const ManageObra = () => {
     }
 
     try {
-      const token = localStorage.getItem("token");
-      await axios.delete(`${BACKEND_URL}/obras/${obraId}/faturas/${faturaId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`${BACKEND_URL}/obras/${obraId}/faturas/${faturaId}`);
 
       toast.success("Fatura apagada com sucesso!");
       fetchObra();

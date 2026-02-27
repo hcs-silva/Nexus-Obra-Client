@@ -41,9 +41,7 @@ const Navbar = () => {
     }
 
     axios
-      .get(`${BACKEND_URL}/clients/${user?.clientId}`, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      })
+      .get(`${BACKEND_URL}/clients/${user?.clientId}`)
       .then((response) => {
         const logoUrl = response.data.clientLogo;
 
