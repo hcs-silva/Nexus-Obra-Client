@@ -15,6 +15,7 @@ export interface AuthContextType {
   login: (username: string, password: string) => void;
   logout: () => void;
   isLoggedIn: boolean;
+  isAuthLoading: boolean;
   setUser: (user: User | null) => void;
 }
 

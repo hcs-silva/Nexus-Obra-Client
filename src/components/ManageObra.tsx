@@ -6,15 +6,22 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import type { Obra, Fatura } from "../types/obra";
+import { useAuth } from "../hooks/useAuth";
 
 const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
 
 const ManageObra = () => {
   const nav = useNavigate();
-  const { obraId } = useParams<{ obraId: string }>();
+  const { obraId, clientId } = useParams<{ obraId: string; clientId: string }>();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [obra, setObra] = useState<Obra | null>(null);
   const [showAddFatura, setShowAddFatura] = useState(false);
+
+  const resolvedClientId = clientId || user?.clientId;
+  const allObrasPath = resolvedClientId
+    ? `/${resolvedClientId}/allobras`
+    : "/masterdash";
 
   // Fatura form state
   const [faturaDescription, setFaturaDescription] = useState("");
@@ -35,7 +42,7 @@ const ManageObra = () => {
     } catch (error) {
       console.error("Error fetching obra:", error);
       toast.error("Failed to load obra");
-      nav("/allobras");
+      nav(allObrasPath);
     }
   };
 
@@ -264,7 +271,7 @@ const ManageObra = () => {
 
       <div className={commonStyles.actions}>
         <button
-          onClick={() => nav("/allobras")}
+          onClick={() => nav(allObrasPath)}
           className={commonStyles.cancelBtn}
         >
           Voltar à Lista

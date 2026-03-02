@@ -15,33 +15,34 @@ import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import styles from "./styles/common.module.css";
-import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate, Routes, Route } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import BuildList from "./components/BuildList";
 import QuotationList from "./components/QuotationList";
 
+const LegacyObraRedirect = ({
+  type,
+}: {
+  type: "allobras" | "addobra";
+}) => {
+  const { user, isLoggedIn, isAuthLoading } = useAuth();
+
+  if (isAuthLoading) {
+    return null;
+  }
+
+  if (!isLoggedIn || !user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!user.clientId) {
+    return <Navigate to="/masterdash" replace />;
+  }
+
+  return <Navigate to={`/${user.clientId}/${type}`} replace />;
+};
+
 function App() {
-  const { logout, isLoggedIn } = useAuth();
-
-  // Logout on window close
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      // Only logout if user is logged in
-      if (isLoggedIn) {
-        logout();
-      }
-    };
-
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    window.addEventListener("unload", handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-      window.removeEventListener("unload", handleBeforeUnload);
-    };
-  }, [isLoggedIn, logout]);
-
   return (
     <div className={styles.layout}>
       <Navbar />
@@ -130,7 +131,7 @@ function App() {
               path="/allobras"
               element={
                 <ProtectedRoute>
-                  <ObraList />
+                  <LegacyObraRedirect type="allobras" />
                 </ProtectedRoute>
               }
             ></Route>
@@ -138,14 +139,14 @@ function App() {
               path="/addobra"
               element={
                 <ProtectedRoute>
-                  <CreateObra />
+                  <LegacyObraRedirect type="addobra" />
                 </ProtectedRoute>
               }
             ></Route>
             <Route
               path="/:clientId/allobras"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requireClientMatch={true}>
                   <ObraList />
                 </ProtectedRoute>
               }
@@ -153,7 +154,7 @@ function App() {
             <Route
               path="/:clientId/addobra"
               element={
-                <ProtectedRoute>
+                <ProtectedRoute requireClientMatch={true}>
                   <CreateObra />
                 </ProtectedRoute>
               }

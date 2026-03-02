@@ -12,24 +12,34 @@ interface AuthProviderProps {
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  // Restore user from storage on mount
+  // Restore user from server session on mount
   useEffect(() => {
-    if (!user) {
-      const storedUser =
-        localStorage.getItem("user") || sessionStorage.getItem("user");
-      if (storedUser) {
-        try {
-          setUser(JSON.parse(storedUser));
-          setIsLoggedIn(true);
-        } catch (e) {
-          console.log("Failed to parse stored user:", e);
-          setUser(null);
-          setIsLoggedIn(false);
-        }
+    const bootstrapAuth = async () => {
+      try {
+        const response = await axios.get(`${BACKEND_URL}/users/me`);
+
+        const userObj: User = {
+          clientId: response.data.clientId,
+          userId: response.data.userId,
+          username: response.data.username,
+          role: response.data.role,
+          resetPassword: response.data.resetPassword,
+        };
+
+        setUser(userObj);
+        setIsLoggedIn(true);
+      } catch {
+        setUser(null);
+        setIsLoggedIn(false);
+      } finally {
+        setIsAuthLoading(false);
       }
-    }
-  }, [user]);
+    };
+
+    bootstrapAuth();
+  }, []);
 
   const login = async (username: string, password: string) => {
     try {
@@ -48,7 +58,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         resetPassword: response.data.resetPassword,
       };
       setUser(userObj);
-      localStorage.setItem("user", JSON.stringify(userObj));
 
       toast.success("Login successful!");
     } catch (error: unknown) {
@@ -63,13 +72,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const logout = () => {
     axios.post(`${BACKEND_URL}/users/logout`).catch(() => undefined);
     localStorage.removeItem("userId");
-    localStorage.removeItem("user");
     setIsLoggedIn(false);
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoggedIn, setUser }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, isLoggedIn, isAuthLoading, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

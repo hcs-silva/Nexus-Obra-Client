@@ -7,10 +7,12 @@ import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
 import { BACKEND_URL } from "../config";
 import { uploadToCloudinary } from "../api/cloudinaryUpload";
+import { useAuth } from "../hooks/useAuth";
 
 const EditObra = () => {
   const nav = useNavigate();
-  const { obraId } = useParams<{ obraId: string }>();
+  const { obraId, clientId } = useParams<{ obraId: string; clientId: string }>();
+  const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -23,6 +25,11 @@ const EditObra = () => {
   const [cadernoFile, setCadernoFile] = useState<File | null>(null);
   const [existingCaderno, setExistingCaderno] = useState<string>("");
   const [uploading, setUploading] = useState(false);
+
+  const resolvedClientId = clientId || user?.clientId;
+  const allObrasPath = resolvedClientId
+    ? `/${resolvedClientId}/allobras`
+    : "/masterdash";
 
   useEffect(() => {
     fetchObra();
@@ -50,7 +57,7 @@ const EditObra = () => {
     } catch (error) {
       console.error("Error fetching obra:", error);
       toast.error("Failed to load obra");
-      nav("/allobras");
+      nav(allObrasPath);
     }
   };
 
@@ -133,7 +140,7 @@ const EditObra = () => {
       toast.success("Obra atualizada com sucesso!");
 
       setTimeout(() => {
-        nav("/allobras");
+        nav(allObrasPath);
       }, 1500);
     } catch (error: unknown) {
       const errorMessage =
@@ -233,7 +240,7 @@ const EditObra = () => {
         <div className={commonStyles.actions}>
           <button
             type="button"
-            onClick={() => nav("/allobras")}
+            onClick={() => nav(allObrasPath)}
             className={commonStyles.cancelBtn}
           >
             Cancelar

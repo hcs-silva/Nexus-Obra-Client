@@ -6,6 +6,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { BACKEND_URL } from "../config";
 import { uploadToCloudinary } from "../api/cloudinaryUpload";
+import { useAuth } from "../hooks/useAuth";
 
 const CreateObra = () => {
   const nav = useNavigate();
@@ -20,6 +21,12 @@ const CreateObra = () => {
   const [cadernoFile, setCadernoFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const { clientId } = useParams<{ clientId: string }>();
+  const { user } = useAuth();
+
+  const resolvedClientId = clientId || user?.clientId;
+  const allObrasPath = resolvedClientId
+    ? `/${resolvedClientId}/allobras`
+    : "/masterdash";
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -94,7 +101,7 @@ const CreateObra = () => {
         cadernoEncargos,
         faturas: [],
         totalExpenses: 0,
-        clientId: clientId || "", // Associate obra with client
+        clientId: resolvedClientId || "", // Associate obra with client
       });
 
       toast.success("Obra criada com sucesso!");
@@ -110,7 +117,7 @@ const CreateObra = () => {
 
       // Navigate back after a short delay
       setTimeout(() => {
-        nav("/allobras");
+        nav(allObrasPath);
       }, 1500);
     } catch (error: unknown) {
       const errorMessage =
@@ -201,7 +208,7 @@ const CreateObra = () => {
         <div className={commonStyles.actions}>
           <button
             type="button"
-            onClick={() => nav("/allobras")}
+            onClick={() => nav(allObrasPath)}
             className={commonStyles.cancelBtn}
           >
             Cancelar

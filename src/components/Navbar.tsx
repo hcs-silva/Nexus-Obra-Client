@@ -27,8 +27,12 @@ const Navbar = () => {
     : items.filter((it) => !("onClick" in it && it.onClick === "login"));
 
   const resolvePath = (to: string) => {
-    if (to.includes(":clientId") && user?.clientId) {
-      return to.replace(":clientId", user.clientId);
+    if (to.includes(":clientId")) {
+      if (user?.clientId) {
+        return to.replace(":clientId", user.clientId);
+      }
+
+      return "/masterdash";
     }
 
     return to;

@@ -29,8 +29,12 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   requiredRoles,
   requireClientMatch = false,
 }) => {
-  const { user, isLoggedIn, logout } = useAuth();
+  const { user, isLoggedIn, isAuthLoading, logout } = useAuth();
   const params = useParams();
+
+  if (isAuthLoading) {
+    return null;
+  }
 
   // Check if user is authenticated
   if (!isLoggedIn || !user) {

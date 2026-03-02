@@ -1,13 +1,20 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 const MasterDashboard = () => {
   const nav = useNavigate();
+  const { user } = useAuth();
 
   function toClientList() {
     nav("/allclients")
   }
   
   function toObraList() {
-    nav("/allobras")
+    if (!user?.clientId) {
+      nav("/masterdash");
+      return;
+    }
+
+    nav(`/${user.clientId}/allobras`)
   }
   
   return (
