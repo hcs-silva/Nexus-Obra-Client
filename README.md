@@ -1,6 +1,6 @@
 # Nexus Obra – Gestão de Obra Client
 
-Client-side application for **Nexus Obra**, a multi-tenant construction management system (Gestão de Obra). Users can manage clients, builds (obras), and quotations (orçamentos) with role-based access control.
+Client-side application for **Nexus Obra**, a multi-tenant construction management system (Gestão de Obra). Users can manage clients, obras (projects), and orçamentos (quotations) with role-based access control.
 
 ## Tech Stack
 
@@ -14,34 +14,41 @@ Client-side application for **Nexus Obra**, a multi-tenant construction manageme
 ## Features
 
 - **Authentication** – login, logout, password reset
+- **Server-authoritative session bootstrap** – app restores auth state via backend (`GET /users/me`)
 - **Role-based access** – `masterAdmin`, `Admin`, `user`, `guest`
 - **Protected routes** – client-scoped access for non-admin users
+- **Scoped obra routing** – canonical routes use `/:clientId/allobras` and `/:clientId/addobra`
+- **Legacy route compatibility** – `/allobras` and `/addobra` redirect to scoped tenant routes
 - **Client management** (masterAdmin) – create, list, edit, delete clients
 - **Client logo** – fetched from backend, displayed in navbar
-- **Dashboard** – per-client dashboard with links to Obras and Orçamentos
+- **Dashboard** – per-client dashboard with links to obras and orçamentos
 - **Master Dashboard** – admin overview and client management entry points
 
 ### User Roles
 
-| Role        | Access                                                                 |
-|-------------|------------------------------------------------------------------------|
-| masterAdmin | Master Dashboard, client list, add/edit clients, full system access    |
-| Admin       | Client-specific dashboard, Obras, Orçamentos, team management          |
-| user        | Home, Profile                                                          |
-| guest       | Login only                                                             |
+| Role        | Access                                                              |
+| ----------- | ------------------------------------------------------------------- |
+| masterAdmin | Master Dashboard, client list, add/edit clients, full system access |
+| Admin       | Client-specific dashboard, obras, orçamentos, team management       |
+| user        | Home, Profile                                                       |
+| guest       | Login only                                                          |
 
 ## Project Structure
 
 ```text
 src/
 ├── components/         # Reusable UI components
-│   ├── BuildList.tsx   # Obras list (placeholder)
+│   ├── BuildList.tsx   # Legacy builds page (placeholder)
 │   ├── ClientList.tsx  # Client list (masterAdmin)
 │   ├── CreateClient.tsx
+│   ├── CreateObra.tsx
 │   ├── EditClient.tsx
+│   ├── EditObra.tsx
 │   ├── Footer.tsx
 │   ├── Header.tsx
+│   ├── ManageObra.tsx
 │   ├── Navbar.tsx      # Role-based navigation
+│   ├── ObraList.tsx
 │   ├── ProtectedRoute.tsx
 │   └── QuotationList.tsx # Orçamentos list (placeholder)
 ├── config/
@@ -68,12 +75,12 @@ src/
 ### Prerequisites
 
 - Node.js 18+
-- npm or yarn
+- pnpm 9+
 
 ### Installation
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Environment Variables
@@ -89,7 +96,7 @@ VITE_BACKEND_URL=http://localhost:5005
 ### Development
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Runs the app at [http://localhost:5173](http://localhost:5173) (or the next available port).
@@ -97,35 +104,47 @@ Runs the app at [http://localhost:5173](http://localhost:5173) (or the next avai
 ### Build
 
 ```bash
-npm run build
+pnpm build
 ```
 
 ### Preview Production Build
 
 ```bash
-npm run preview
+pnpm preview
 ```
 
 ### Lint
 
 ```bash
-npm run lint
+pnpm lint
 ```
 
 ## Routes
 
-| Path                     | Access                     | Description                    |
-|--------------------------|----------------------------|--------------------------------|
-| `/`                      | Public                     | Welcome page                   |
-| `/login`                 | Public                     | Login form                     |
-| `/masterdash`            | masterAdmin                | Master dashboard               |
-| `/allclients`            | masterAdmin                | Client list                    |
-| `/addclient`             | masterAdmin                | Create client                  |
-| `/editclient/:clientId`  | masterAdmin / client match | Edit client                    |
-| `/dashboard/:clientId`   | Admin (client match)       | Client dashboard               |
-| `/builds`                | Authenticated              | Obras list                     |
-| `/quotations`            | Authenticated              | Orçamentos list                |
-| `/resetpassword/:userId` | Authenticated              | Password reset                 |
+| Path                     | Access                                           | Description                           |
+| ------------------------ | ------------------------------------------------ | ------------------------------------- |
+| `/`                      | Public                                           | Welcome page                          |
+| `/login`                 | Public                                           | Login form                            |
+| `/masterdash`            | masterAdmin                                      | Master dashboard                      |
+| `/allclients`            | masterAdmin                                      | Client list                           |
+| `/addclient`             | masterAdmin                                      | Create client                         |
+| `/editclient/:clientId`  | masterAdmin / client match                       | Edit client                           |
+| `/dashboard/:clientId`   | Admin (client match)                             | Client dashboard                      |
+| `/allobras`              | Authenticated                                    | Legacy redirect to scoped obras       |
+| `/addobra`               | Authenticated                                    | Legacy redirect to scoped create obra |
+| `/:clientId/allobras`    | Authenticated (client match for non-masterAdmin) | Canonical obras list                  |
+| `/:clientId/addobra`     | Authenticated (client match for non-masterAdmin) | Canonical create obra                 |
+| `/editobra/:obraId`      | Authenticated                                    | Edit obra                             |
+| `/manageobra/:obraId`    | Authenticated                                    | Manage obra + invoices                |
+| `/builds`                | Authenticated                                    | Legacy placeholder builds page        |
+| `/quotations`            | Authenticated                                    | Legacy placeholder quotations page    |
+| `/resetpassword/:userId` | Authenticated                                    | Password reset                        |
+
+## Auth & Session Model
+
+- Login sets an httpOnly auth cookie from backend.
+- On app initialization, auth state is restored via backend profile endpoint (`GET /users/me`).
+- Persisted local client metadata is not treated as authorization source of truth.
 
 ## Design & Styling
 
