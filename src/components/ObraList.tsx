@@ -148,7 +148,9 @@ const ObraList = () => {
           Voltar
         </button>
         <button
-          onClick={() => nav(user?.clientId ? `/${user.clientId}/addobra` : "/masterdash")}
+          onClick={() =>
+            nav(user?.clientId ? `/${user.clientId}/addobra` : "/masterdash")
+          }
           className={commonStyles.submitBtn}
         >
           Adicionar Obra

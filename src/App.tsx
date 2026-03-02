@@ -20,11 +20,7 @@ import { useAuth } from "./hooks/useAuth";
 import BuildList from "./components/BuildList";
 import QuotationList from "./components/QuotationList";
 
-const LegacyObraRedirect = ({
-  type,
-}: {
-  type: "allobras" | "addobra";
-}) => {
+const LegacyObraRedirect = ({ type }: { type: "allobras" | "addobra" }) => {
   const { user, isLoggedIn, isAuthLoading } = useAuth();
 
   if (isAuthLoading) {

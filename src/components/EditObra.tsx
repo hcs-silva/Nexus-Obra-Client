@@ -11,7 +11,10 @@ import { useAuth } from "../hooks/useAuth";
 
 const EditObra = () => {
   const nav = useNavigate();
-  const { obraId, clientId } = useParams<{ obraId: string; clientId: string }>();
+  const { obraId, clientId } = useParams<{
+    obraId: string;
+    clientId: string;
+  }>();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");

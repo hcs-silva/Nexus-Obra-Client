@@ -5,18 +5,18 @@ const MasterDashboard = () => {
   const { user } = useAuth();
 
   function toClientList() {
-    nav("/allclients")
+    nav("/allclients");
   }
-  
+
   function toObraList() {
     if (!user?.clientId) {
       nav("/masterdash");
       return;
     }
 
-    nav(`/${user.clientId}/allobras`)
+    nav(`/${user.clientId}/allobras`);
   }
-  
+
   return (
     <div>
       <h1>Master Dashboard</h1>

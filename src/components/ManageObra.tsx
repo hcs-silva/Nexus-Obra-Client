@@ -12,7 +12,10 @@ const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
 
 const ManageObra = () => {
   const nav = useNavigate();
-  const { obraId, clientId } = useParams<{ obraId: string; clientId: string }>();
+  const { obraId, clientId } = useParams<{
+    obraId: string;
+    clientId: string;
+  }>();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [obra, setObra] = useState<Obra | null>(null);
