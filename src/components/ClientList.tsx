@@ -1,9 +1,8 @@
 import styles from "../styles/clientlist.module.css";
 import commonStyles from "../styles/common.module.css";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../config";
+import apiClient from "../api/httpClient";
 
 import type { Client } from "../types/auth";
 
@@ -15,8 +14,8 @@ const ClientList = () => {
   const [appliedQuery, setAppliedQuery] = useState("");
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/clients/`)
+    apiClient
+      .get("/clients/")
       .then((response) => {
         const responseClients = Array.isArray(response.data)
           ? response.data

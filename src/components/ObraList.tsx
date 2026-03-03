@@ -1,13 +1,11 @@
 import styles from "../sass/clientlist.module.scss";
 import commonStyles from "../sass/common.module.scss";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
 import { useAuth } from "../hooks/useAuth";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import apiClient from "../api/httpClient";
 
 const ObraList = () => {
   const nav = useNavigate();
@@ -39,7 +37,7 @@ const ObraList = () => {
 
   const fetchObras = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/`);
+      const response = await apiClient.get("/obras/");
       setObras(response.data);
       setFilteredObras(response.data);
     } catch (error) {
@@ -54,7 +52,7 @@ const ObraList = () => {
     }
 
     try {
-      await axios.delete(`${BACKEND_URL}/obras/${obraId}`);
+      await apiClient.delete(`/obras/${obraId}`);
       toast.success("Obra deleted successfully");
       fetchObras();
     } catch (error) {

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BACKEND_URL } from "../config";
+import apiClient from "./httpClient";
 
 type CloudinaryResourceType = "image" | "raw";
 
@@ -16,8 +16,8 @@ export const uploadToCloudinary = async (
   file: File,
   resourceType: CloudinaryResourceType,
 ): Promise<string> => {
-  const { data } = await axios.post<CloudinarySignatureResponse>(
-    `${BACKEND_URL}/uploads/cloudinary/signature`,
+  const { data } = await apiClient.post<CloudinarySignatureResponse>(
+    "/uploads/cloudinary/signature",
     { resourceType },
   );
 

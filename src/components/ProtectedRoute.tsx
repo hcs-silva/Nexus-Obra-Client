@@ -8,6 +8,55 @@ interface ProtectedRouteProps {
   requireClientMatch?: boolean;
 }
 
+export type ProtectedRouteDecision =
+  | { kind: "allow" }
+  | { kind: "redirect"; to: "/login" | "/"; shouldLogout?: boolean };
+
+interface ProtectedRouteEvaluationInput {
+  isLoggedIn: boolean;
+  isAuthLoading: boolean;
+  user: {
+    role: string;
+    clientId?: string;
+  } | null;
+  requiredRoles?: string[];
+  requireClientMatch?: boolean;
+  clientIdFromUrl?: string;
+}
+
+export const evaluateProtectedRouteAccess = ({
+  isLoggedIn,
+  isAuthLoading,
+  user,
+  requiredRoles,
+  requireClientMatch = false,
+  clientIdFromUrl,
+}: ProtectedRouteEvaluationInput): ProtectedRouteDecision | null => {
+  if (isAuthLoading) {
+    return null;
+  }
+
+  if (!isLoggedIn || !user) {
+    return { kind: "redirect", to: "/login" };
+  }
+
+  if (requiredRoles && !requiredRoles.includes(user.role)) {
+    return { kind: "redirect", to: "/" };
+  }
+
+  if (requireClientMatch && user.role !== "masterAdmin") {
+    if (!clientIdFromUrl) {
+      return { kind: "redirect", to: "/login", shouldLogout: true };
+    }
+
+    if (user.clientId !== clientIdFromUrl) {
+      return { kind: "redirect", to: "/" };
+    }
+  }
+
+  return { kind: "allow" };
+};
+
 /**
  * ProtectedRoute component ensures:
  * 1. Only authenticated users can access protected routes
@@ -32,39 +81,25 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const { user, isLoggedIn, isAuthLoading, logout } = useAuth();
   const params = useParams();
 
-  if (isAuthLoading) {
+  const decision = evaluateProtectedRouteAccess({
+    isLoggedIn,
+    isAuthLoading,
+    user,
+    requiredRoles,
+    requireClientMatch,
+    clientIdFromUrl: params.clientId,
+  });
+
+  if (decision === null) {
     return null;
   }
 
-  // Check if user is authenticated
-  if (!isLoggedIn || !user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Check if user has required role
-  if (requiredRoles && !requiredRoles.includes(user.role)) {
-    return <Navigate to="/" replace />;
-  }
-
-  // Check client match for non-masterAdmin users
-  // masterAdmin users bypass client restrictions
-  if (requireClientMatch && user.role !== "masterAdmin") {
-    const clientIdFromUrl = params.clientId;
-
-    if (!clientIdFromUrl) {
-      // If route requires client match but no clientId in URL, logout and redirect to login
-      // This updates the navbar to show login button
+  if (decision.kind === "redirect") {
+    if (decision.shouldLogout) {
       logout();
-      return <Navigate to="/login" replace />;
     }
 
-    if (user.clientId !== clientIdFromUrl) {
-      // User's client doesn't match the route's client
-      console.warn(
-        `Access denied: User with clientId ${user.clientId} tried to access clientId ${clientIdFromUrl}`,
-      );
-      return <Navigate to="/" replace />;
-    }
+    return <Navigate to={decision.to} replace />;
   }
 
   // All checks passed, render the protected component

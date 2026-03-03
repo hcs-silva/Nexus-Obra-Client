@@ -2,11 +2,10 @@ import styles from "../sass/createclient.module.scss";
 import commonStyles from "../styles/common.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
 import { uploadToCloudinary } from "../api/cloudinaryUpload";
 import { useAuth } from "../hooks/useAuth";
+import apiClient from "../api/httpClient";
 
 const CreateObra = () => {
   const nav = useNavigate();
@@ -91,7 +90,7 @@ const CreateObra = () => {
         }
       }
 
-      await axios.post(`${BACKEND_URL}/obras/createObra`, {
+      await apiClient.post("/obras/createObra", {
         obraName: name.trim(),
         obraDescription: description.trim(),
         obraLocation: location.trim(),

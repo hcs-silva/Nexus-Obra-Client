@@ -19,6 +19,8 @@ import { Navigate, Routes, Route } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 import BuildList from "./components/BuildList";
 import QuotationList from "./components/QuotationList";
+import RouteErrorBoundary from "./components/RouteErrorBoundary";
+import type { ReactNode } from "react";
 
 const LegacyObraRedirect = ({ type }: { type: "allobras" | "addobra" }) => {
   const { user, isLoggedIn, isAuthLoading } = useAuth();
@@ -39,6 +41,10 @@ const LegacyObraRedirect = ({ type }: { type: "allobras" | "addobra" }) => {
 };
 
 function App() {
+  const withRouteBoundary = (name: string, element: ReactNode) => (
+    <RouteErrorBoundary routeName={name}>{element}</RouteErrorBoundary>
+  );
+
   return (
     <div className={styles.layout}>
       <Navbar />
@@ -46,130 +52,150 @@ function App() {
         <Header />
         <main className={styles.main}>
           <Routes>
-            <Route path="/" element={<WelcomePage />}></Route>
-            <Route path="/login" element={<LoginPage />}></Route>
+            <Route
+              path="/"
+              element={withRouteBoundary("welcome", <WelcomePage />)}
+            ></Route>
+            <Route
+              path="/login"
+              element={withRouteBoundary("login", <LoginPage />)}
+            ></Route>
 
             {/* Protected Routes - Only authenticated users */}
             <Route
               path="/dashboard/:clientId"
-              element={
+              element={withRouteBoundary(
+                "dashboard",
                 <ProtectedRoute requireClientMatch={true}>
                   <DashboardPage />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             {/* Master Admin Only Routes */}
             <Route
               path="/masterdash"
-              element={
+              element={withRouteBoundary(
+                "masterdash",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <MasterDashboard />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             <Route
               path="/allclients"
-              element={
+              element={withRouteBoundary(
+                "allclients",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <ClientList />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             <Route
               path="/addclient"
-              element={
+              element={withRouteBoundary(
+                "addclient",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <CreateClient />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             <Route
               path="/editclient/:clientId"
-              element={
+              element={withRouteBoundary(
+                "editclient",
                 <ProtectedRoute requireClientMatch={true}>
                   <EditClient />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             {/* Client-based Protected Routes */}
             <Route
               path="/builds"
-              element={
+              element={withRouteBoundary(
+                "builds",
                 <ProtectedRoute>
                   <BuildList />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             <Route
               path="/quotations"
-              element={
+              element={withRouteBoundary(
+                "quotations",
                 <ProtectedRoute>
                   <QuotationList />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
 
             <Route
               path="/resetpassword/:userId"
-              element={
+              element={withRouteBoundary(
+                "resetpassword",
                 <ProtectedRoute>
                   <PasswordUpdatePage />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/allobras"
-              element={
+              element={withRouteBoundary(
+                "legacy-allobras",
                 <ProtectedRoute>
                   <LegacyObraRedirect type="allobras" />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/addobra"
-              element={
+              element={withRouteBoundary(
+                "legacy-addobra",
                 <ProtectedRoute>
                   <LegacyObraRedirect type="addobra" />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/:clientId/allobras"
-              element={
+              element={withRouteBoundary(
+                "allobras",
                 <ProtectedRoute requireClientMatch={true}>
                   <ObraList />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/:clientId/addobra"
-              element={
+              element={withRouteBoundary(
+                "addobra",
                 <ProtectedRoute requireClientMatch={true}>
                   <CreateObra />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/editobra/:obraId"
-              element={
+              element={withRouteBoundary(
+                "editobra",
                 <ProtectedRoute>
                   <EditObra />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
             <Route
               path="/manageobra/:obraId"
-              element={
+              element={withRouteBoundary(
+                "manageobra",
                 <ProtectedRoute>
                   <ManageObra />
                 </ProtectedRoute>
-              }
+              )}
             ></Route>
           </Routes>
         </main>

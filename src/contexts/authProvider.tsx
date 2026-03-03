@@ -1,13 +1,28 @@
 import { useState, useEffect, type ReactNode } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import type { User } from "../types/auth";
 import { AuthContext } from "./authContext";
-import { BACKEND_URL } from "../config";
+import apiClient from "../api/httpClient";
 
 interface AuthProviderProps {
   children: ReactNode;
 }
+
+interface AuthPayload {
+  clientId: string;
+  userId: string;
+  username: string;
+  role: User["role"];
+  resetPassword: boolean;
+}
+
+export const mapAuthPayloadToUser = (payload: AuthPayload): User => ({
+  clientId: payload.clientId,
+  userId: payload.userId,
+  username: payload.username,
+  role: payload.role,
+  resetPassword: payload.resetPassword,
+});
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
@@ -18,15 +33,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     const bootstrapAuth = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/users/me`);
+        const response = await apiClient.get("/users/me");
 
-        const userObj: User = {
-          clientId: response.data.clientId,
-          userId: response.data.userId,
-          username: response.data.username,
-          role: response.data.role,
-          resetPassword: response.data.resetPassword,
-        };
+        const userObj = mapAuthPayloadToUser(response.data as AuthPayload);
 
         setUser(userObj);
         setIsLoggedIn(true);
@@ -41,22 +50,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     bootstrapAuth();
   }, []);
 
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      setIsLoggedIn(false);
+      setUser(null);
+    };
+
+    window.addEventListener("nexus-obra:unauthorized", handleUnauthorized);
+    return () => {
+      window.removeEventListener("nexus-obra:unauthorized", handleUnauthorized);
+    };
+  }, []);
+
   const login = async (username: string, password: string) => {
     try {
-      const response = await axios.post(`${BACKEND_URL}/users/login`, {
+      const response = await apiClient.post("/users/login", {
         username,
         password,
       });
 
-      localStorage.setItem("userId", response.data.userId);
       setIsLoggedIn(true);
-      const userObj = {
-        clientId: response.data.clientId,
-        userId: response.data.userId,
+      const userObj = mapAuthPayloadToUser({
+        ...(response.data as Omit<AuthPayload, "username">),
         username,
-        role: response.data.role,
-        resetPassword: response.data.resetPassword,
-      };
+      });
       setUser(userObj);
 
       toast.success("Login successful!");
@@ -70,8 +87,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const logout = () => {
-    axios.post(`${BACKEND_URL}/users/logout`).catch(() => undefined);
-    localStorage.removeItem("userId");
+    apiClient.post("/users/logout").catch(() => undefined);
     setIsLoggedIn(false);
     setUser(null);
   };

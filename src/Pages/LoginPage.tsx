@@ -5,6 +5,27 @@ import commonStyles from "../styles/common.module.css";
 
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
+import type { User } from "../types/auth";
+
+export const resolvePostLoginPath = (user: User | null): string | null => {
+  if (!user) {
+    return null;
+  }
+
+  if (user.resetPassword === true) {
+    return `/resetpassword/${user.userId}`;
+  }
+
+  if (user.role === "masterAdmin") {
+    return "/masterdash";
+  }
+
+  if (user.role === "Admin") {
+    return `/dashboard/${user.clientId}`;
+  }
+
+  return null;
+};
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -12,10 +33,10 @@ const LoginPage = () => {
   const nav = useNavigate();
   const { login, user } = useAuth();
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     try {
-      login(username, password);
+      await login(username, password);
     } catch (error: unknown) {
       const errorMessage =
         (error as { response?: { data?: { message?: string } } })?.response
@@ -26,12 +47,10 @@ const LoginPage = () => {
     }
   }
   useEffect(() => {
-    if (user?.resetPassword === true) {
-      nav(`/resetpassword/${user.userId}`);
-    } else if (user?.role === "masterAdmin") {
-      nav("/masterdash");
-    } else if (user?.role === "Admin") {
-      nav(`/dashboard/${user.clientId}`);
+    const targetPath = resolvePostLoginPath(user);
+
+    if (targetPath) {
+      nav(targetPath);
     }
   }, [user, nav]);
 

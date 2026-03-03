@@ -2,12 +2,11 @@ import styles from "../sass/createclient.module.scss";
 import commonStyles from "../styles/common.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import type { Obra } from "../types/obra";
-import { BACKEND_URL } from "../config";
 import { uploadToCloudinary } from "../api/cloudinaryUpload";
 import { useAuth } from "../hooks/useAuth";
+import apiClient from "../api/httpClient";
 
 const EditObra = () => {
   const nav = useNavigate();
@@ -41,7 +40,7 @@ const EditObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
+      const response = await apiClient.get(`/obras/${obraId}`);
       const obra: Obra = response.data;
       setName(obra.obraName);
       setDescription(obra.obraDescription || "");
@@ -138,7 +137,7 @@ const EditObra = () => {
         updateData.cadernoEncargos = cadernoEncargos;
       }
 
-      await axios.patch(`${BACKEND_URL}/obras/${obraId}`, updateData);
+      await apiClient.patch(`/obras/${obraId}`, updateData);
 
       toast.success("Obra atualizada com sucesso!");
 

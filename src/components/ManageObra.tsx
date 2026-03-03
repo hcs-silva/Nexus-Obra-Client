@@ -3,12 +3,10 @@ import commonStyles from "../styles/common.module.css";
 import tableStyles from "../styles/table.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import type { Obra, Fatura } from "../types/obra";
 import { useAuth } from "../hooks/useAuth";
-
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:5005";
+import apiClient from "../api/httpClient";
 
 const ManageObra = () => {
   const nav = useNavigate();
@@ -39,7 +37,7 @@ const ManageObra = () => {
 
   const fetchObra = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/obras/${obraId}`);
+      const response = await apiClient.get(`/obras/${obraId}`);
       setObra(response.data);
       setLoading(false);
     } catch (error) {
@@ -71,7 +69,7 @@ const ManageObra = () => {
         category: faturaCategory.trim() || undefined,
       };
 
-      await axios.post(`${BACKEND_URL}/obras/${obraId}/faturas`, newFatura);
+      await apiClient.post(`/obras/${obraId}/faturas`, newFatura);
 
       toast.success("Fatura adicionada com sucesso!");
 
@@ -98,7 +96,7 @@ const ManageObra = () => {
     }
 
     try {
-      await axios.delete(`${BACKEND_URL}/obras/${obraId}/faturas/${faturaId}`);
+      await apiClient.delete(`/obras/${obraId}/faturas/${faturaId}`);
 
       toast.success("Fatura apagada com sucesso!");
       fetchObra();

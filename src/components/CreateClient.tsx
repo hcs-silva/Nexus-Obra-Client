@@ -2,10 +2,9 @@ import styles from "../sass/createclient.module.scss";
 import commonStyles from "../styles/common.module.css";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
 import { uploadToCloudinary } from "../api/cloudinaryUpload";
+import apiClient from "../api/httpClient";
 
 const CreateClient = () => {
   const nav = useNavigate();
@@ -38,7 +37,7 @@ const CreateClient = () => {
     const finalLogoUrl = uploadedUrl || DEFAULT_CLIENT_LOGO;
 
     try {
-      await axios.post(`${BACKEND_URL}/clients/createClient`, {
+      await apiClient.post("/clients/createClient", {
         clientName: clientName.trim(),
         adminUsername: adminUsername.trim(),
         adminPassword: adminPassword,

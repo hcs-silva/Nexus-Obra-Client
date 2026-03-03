@@ -1,11 +1,10 @@
 import styles from "../styles/passwordupdatepage.module.css";
 import commonStyles from "../styles/common.module.css";
-import axios from "axios";
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import apiClient from "../api/httpClient";
 
 const PasswordUpdatePage = () => {
   const { userId } = useParams();
@@ -30,7 +29,7 @@ const PasswordUpdatePage = () => {
         return;
       }
 
-      await axios.patch(`${BACKEND_URL}/users/resetpassword/${userId}`, {
+      await apiClient.patch(`/users/resetpassword/${userId}`, {
         newPassword,
       });
 

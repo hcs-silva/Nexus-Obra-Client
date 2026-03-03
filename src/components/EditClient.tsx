@@ -2,9 +2,8 @@ import styles from "../sass/editclient.module.scss";
 import commonStyles from "../sass/common.module.scss";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { toast } from "react-toastify";
-import { BACKEND_URL } from "../config";
+import apiClient from "../api/httpClient";
 
 const EditClient = () => {
   const { clientId } = useParams<{ clientId: string }>();
@@ -19,8 +18,8 @@ const EditClient = () => {
   const nav = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(`${BACKEND_URL}/clients/${clientId}`)
+    apiClient
+      .get(`/clients/${clientId}`)
       .then((response) => {
         // Handle the response data here
         console.log("Fetched client:", response.data);
@@ -49,7 +48,7 @@ const EditClient = () => {
     e.preventDefault();
 
     try {
-      axios.patch(`${BACKEND_URL}/clients/${clientId}`, formData);
+      apiClient.patch(`/clients/${clientId}`, formData);
 
       toast.success("Client updated successfully!");
       nav("/allclients");
@@ -61,8 +60,8 @@ const EditClient = () => {
   };
 
   const handleDelete = () => {
-    axios
-      .delete(`${BACKEND_URL}/clients/${clientId}`)
+    apiClient
+      .delete(`/clients/${clientId}`)
       .then(() => {
         toast.success("Client deleted successfully!");
         nav("/allclients");

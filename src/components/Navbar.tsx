@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { roleConfig } from "../config/roleConfig";
 import type { UserRole } from "../config/roleConfig";
-import axios from "axios";
-import { BACKEND_URL } from "../config";
+import apiClient from "../api/httpClient";
 
 const Navbar = () => {
   const { isLoggedIn, logout, user } = useAuth();
@@ -44,8 +43,8 @@ const Navbar = () => {
       return;
     }
 
-    axios
-      .get(`${BACKEND_URL}/clients/${user?.clientId}`)
+    apiClient
+      .get(`/clients/${user?.clientId}`)
       .then((response) => {
         const logoUrl = response.data.clientLogo;
 
