@@ -140,7 +140,7 @@ const ObraList = () => {
       </table>
       <div className={commonStyles.actions}>
         <button
-          onClick={() => nav("/masterdash")}
+          onClick={() => nav(`/dashboard/${user?.clientId}`)}
           className={commonStyles.cancelBtn}
         >
           Voltar

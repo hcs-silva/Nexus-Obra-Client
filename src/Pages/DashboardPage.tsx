@@ -7,7 +7,7 @@ const DashboardPage = () => {
     <div className={styles.dashboardContainer}>
       <h1>Dashboard</h1>
       <div>
-        <button onClick={()=> nav("/builds")}>Obras</button>
+        <button onClick={()=> nav("/obras")}>Obras</button>
         <button onClick={()=> nav("/quotations")}>Orçamentos</button>
       </div>
     </div>

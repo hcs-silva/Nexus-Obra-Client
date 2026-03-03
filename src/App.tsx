@@ -17,12 +17,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import styles from "./styles/common.module.css";
 import { Navigate, Routes, Route } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
-import BuildList from "./components/BuildList";
+
 import QuotationList from "./components/QuotationList";
 import RouteErrorBoundary from "./components/RouteErrorBoundary";
 import type { ReactNode } from "react";
 
-const LegacyObraRedirect = ({ type }: { type: "allobras" | "addobra" }) => {
+const LegacyObraRedirect = ({ type }: { type: "obras" | "addobra" }) => {
   const { user, isLoggedIn, isAuthLoading } = useAuth();
 
   if (isAuthLoading) {
@@ -115,11 +115,11 @@ function App() {
 
             {/* Client-based Protected Routes */}
             <Route
-              path="/builds"
+              path="/obras"
               element={withRouteBoundary(
-                "builds",
+                "obras",
                 <ProtectedRoute>
-                  <BuildList />
+                  <ObraList />
                 </ProtectedRoute>,
               )}
             ></Route>
@@ -144,11 +144,11 @@ function App() {
               )}
             ></Route>
             <Route
-              path="/allobras"
+              path="/obras"
               element={withRouteBoundary(
-                "legacy-allobras",
+                "legacy-obras",
                 <ProtectedRoute>
-                  <LegacyObraRedirect type="allobras" />
+                  <LegacyObraRedirect type="obras" />
                 </ProtectedRoute>,
               )}
             ></Route>
@@ -162,9 +162,9 @@ function App() {
               )}
             ></Route>
             <Route
-              path="/:clientId/allobras"
+              path="/:clientId/obras"
               element={withRouteBoundary(
-                "allobras",
+                "obras",
                 <ProtectedRoute requireClientMatch={true}>
                   <ObraList />
                 </ProtectedRoute>,

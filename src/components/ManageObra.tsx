@@ -8,6 +8,11 @@ import type { Obra, Fatura } from "../types/obra";
 import { useAuth } from "../hooks/useAuth";
 import apiClient from "../api/httpClient";
 
+type ObraOption = {
+  _id: string;
+  obraName: string;
+};
+
 const ManageObra = () => {
   const nav = useNavigate();
   const { obraId, clientId } = useParams<{
@@ -17,11 +22,13 @@ const ManageObra = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [obra, setObra] = useState<Obra | null>(null);
+  const [obraOptions, setObraOptions] = useState<ObraOption[]>([]);
   const [showAddFatura, setShowAddFatura] = useState(false);
+  const [editingFaturaId, setEditingFaturaId] = useState<string | null>(null);
 
   const resolvedClientId = clientId || user?.clientId;
   const allObrasPath = resolvedClientId
-    ? `/${resolvedClientId}/allobras`
+    ? `/${resolvedClientId}/obras`
     : "/masterdash";
 
   // Fatura form state
@@ -29,9 +36,18 @@ const ManageObra = () => {
   const [faturaAmount, setFaturaAmount] = useState("");
   const [faturaDate, setFaturaDate] = useState("");
   const [faturaCategory, setFaturaCategory] = useState("");
+  const [faturaObraId, setFaturaObraId] = useState(obraId || "");
+
+  // Edit fatura form state
+  const [editDescription, setEditDescription] = useState("");
+  const [editAmount, setEditAmount] = useState("");
+  const [editDate, setEditDate] = useState("");
+  const [editCategory, setEditCategory] = useState("");
+  const [editObraId, setEditObraId] = useState(obraId || "");
 
   useEffect(() => {
     fetchObra();
+    fetchObraOptions();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [obraId]);
 
@@ -47,7 +63,20 @@ const ManageObra = () => {
     }
   };
 
-  const handleAddFatura = async (e: React.FormEvent<HTMLFormElement>) => {
+  const fetchObraOptions = async () => {
+    try {
+      const response = await apiClient.get("/obras");
+      const options = (response.data || []).map((currentObra: ObraOption) => ({
+        _id: currentObra._id,
+        obraName: currentObra.obraName,
+      }));
+      setObraOptions(options);
+    } catch (error) {
+      console.error("Error fetching obras for fatura form:", error);
+    }
+  };
+
+  const handleAddFatura = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!faturaDescription.trim() || !faturaAmount || !faturaDate) {
@@ -62,14 +91,22 @@ const ManageObra = () => {
     }
 
     try {
+      const selectedObraId = faturaObraId || obraId || "";
+
+      if (!selectedObraId) {
+        toast.error("Selecione a obra");
+        return;
+      }
+
       const newFatura: Omit<Fatura, "_id"> = {
+        obraId: selectedObraId,
         description: faturaDescription.trim(),
         amount,
         date: new Date(faturaDate),
         category: faturaCategory.trim() || undefined,
       };
 
-      await apiClient.post(`/obras/${obraId}/faturas`, newFatura);
+      await apiClient.post(`/obras/${selectedObraId}/faturas`, newFatura);
 
       toast.success("Fatura adicionada com sucesso!");
 
@@ -78,14 +115,85 @@ const ManageObra = () => {
       setFaturaAmount("");
       setFaturaDate("");
       setFaturaCategory("");
+      setFaturaObraId(obraId || "");
       setShowAddFatura(false);
 
-      // Refresh obra data
+      if (selectedObraId !== obraId) {
+        nav(`/manageobra/${selectedObraId}`);
+        return;
+      }
+
       fetchObra();
     } catch (error: unknown) {
       const errorMessage =
         (error as { response?: { data?: { message?: string } } })?.response
           ?.data?.message || "Failed to add fatura. Please try again.";
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleStartEditFatura = (fatura: Fatura) => {
+    setEditingFaturaId(fatura._id || null);
+    setEditDescription(fatura.description);
+    setEditAmount(String(fatura.amount));
+    setEditDate(new Date(fatura.date).toISOString().split("T")[0]);
+    setEditCategory(fatura.category || "");
+    setEditObraId((fatura.obraId as string) || obraId || "");
+  };
+
+  const handleCancelEditFatura = () => {
+    setEditingFaturaId(null);
+    setEditDescription("");
+    setEditAmount("");
+    setEditDate("");
+    setEditCategory("");
+    setEditObraId(obraId || "");
+  };
+
+  const handleUpdateFatura = async (e: React.SubmitEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (!editingFaturaId) {
+      return;
+    }
+
+    if (!editDescription.trim() || !editAmount || !editDate) {
+      toast.error("Preencha todos os campos obrigatórios");
+      return;
+    }
+
+    const parsedAmount = parseFloat(editAmount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      toast.error("Valor inválido");
+      return;
+    }
+
+    try {
+      const selectedObraId = editObraId || obraId;
+
+      await apiClient.patch(`/obras/${obraId}/faturas/${editingFaturaId}`, {
+        obraId: selectedObraId,
+        description: editDescription.trim(),
+        amount: parsedAmount,
+        date: new Date(editDate),
+        category: editCategory.trim() || undefined,
+      });
+
+      toast.success("Fatura atualizada com sucesso!");
+
+      const movedToAnotherObra = selectedObraId && selectedObraId !== obraId;
+      handleCancelEditFatura();
+
+      if (movedToAnotherObra) {
+        nav(`/manageobra/${selectedObraId}`);
+        return;
+      }
+
+      fetchObra();
+    } catch (error: unknown) {
+      const errorMessage =
+        (error as { response?: { data?: { message?: string } } })?.response
+          ?.data?.message || "Failed to update fatura. Please try again.";
       toast.error(errorMessage);
     }
   };
@@ -185,6 +293,21 @@ const ManageObra = () => {
             onSubmit={handleAddFatura}
           >
             <label>
+              Obra:*
+              <select
+                value={faturaObraId}
+                onChange={(e) => setFaturaObraId(e.target.value)}
+                required
+              >
+                <option value="">Selecione uma obra</option>
+                {obraOptions.map((option) => (
+                  <option key={option._id} value={option._id}>
+                    {option.obraName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
               Descrição:*
               <input
                 type="text"
@@ -253,6 +376,12 @@ const ManageObra = () => {
                   <td>€{fatura.amount.toFixed(2)}</td>
                   <td>
                     <button
+                      onClick={() => handleStartEditFatura(fatura)}
+                      className={`${commonStyles.submitBtn} ${styles.compactActionBtn}`}
+                    >
+                      Editar
+                    </button>
+                    <button
                       onClick={() => handleDeleteFatura(fatura._id!)}
                       className={`${commonStyles.cancelBtn} ${styles.compactActionBtn}`}
                     >
@@ -269,6 +398,78 @@ const ManageObra = () => {
           <h3>Total de Despesas: €{obra.totalExpenses.toFixed(2)}</h3>
         </div>
       </div>
+
+      {editingFaturaId && (
+        <div className={styles.sectionSpacing}>
+          <h2>Atualizar Fatura</h2>
+          <form className={commonStyles.form} onSubmit={handleUpdateFatura}>
+            <label>
+              Obra:*
+              <select
+                value={editObraId}
+                onChange={(e) => setEditObraId(e.target.value)}
+                required
+              >
+                <option value="">Selecione uma obra</option>
+                {obraOptions.map((option) => (
+                  <option key={option._id} value={option._id}>
+                    {option.obraName}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Descrição:*
+              <input
+                type="text"
+                value={editDescription}
+                onChange={(e) => setEditDescription(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Valor (€):*
+              <input
+                type="number"
+                step="0.01"
+                min="0"
+                value={editAmount}
+                onChange={(e) => setEditAmount(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Data:*
+              <input
+                type="date"
+                value={editDate}
+                onChange={(e) => setEditDate(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Categoria:
+              <input
+                type="text"
+                value={editCategory}
+                onChange={(e) => setEditCategory(e.target.value)}
+              />
+            </label>
+            <div className={commonStyles.actions}>
+              <button
+                type="button"
+                onClick={handleCancelEditFatura}
+                className={commonStyles.cancelBtn}
+              >
+                Cancelar
+              </button>
+              <button type="submit" className={commonStyles.submitBtn}>
+                Guardar Fatura
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       <div className={commonStyles.actions}>
         <button
