@@ -2,15 +2,33 @@ import path from "node:path";
 
 const cwd = process.cwd();
 const cwdLeaf = path.basename(cwd);
+const allowedCwdLeaves = (
+  process.env.NEXUS_ALLOWED_CWD_LEAVES || "Client,Nexus-Obra-Client"
+)
+  .split(",")
+  .map((item) => item.trim())
+  .filter(Boolean);
 
 const fail = (message) => {
   console.error(`❌ ${message}`);
   process.exit(1);
 };
 
-if (cwdLeaf !== "Client") {
+if (!allowedCwdLeaves.includes(cwdLeaf)) {
+  const expectedCaseMatch = allowedCwdLeaves.find(
+    (leaf) => leaf.toLowerCase() === cwdLeaf.toLowerCase(),
+  );
+
+  if (expectedCaseMatch) {
+    fail(
+      `Workspace path casing mismatch. Expected leaf '${expectedCaseMatch}' but got '${cwdLeaf}'.`,
+    );
+  }
+
   fail(
-    `Workspace path casing mismatch. Run commands from a path ending in '/Client' (current leaf: '${cwdLeaf}').`,
+    `Unsupported workspace leaf '${cwdLeaf}'. Allowed values: ${allowedCwdLeaves.join(
+      ", ",
+    )}.`,
   );
 }
 
