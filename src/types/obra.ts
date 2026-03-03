@@ -9,13 +9,12 @@ export interface CadernoEncargos {
 
 export interface Fatura {
   _id?: string;
+  obraId?: string;
   description: string;
   amount: number;
   date: Date;
   category?: string;
 }
-
-
 
 export interface Obra {
   _id?: string;
@@ -25,7 +24,7 @@ export interface Obra {
   obraLocation?: string;
   startDate?: Date;
   endDate?: Date;
-  obraStatus: 'planning' | 'in-progress' | 'completed' | 'on-hold';
+  obraStatus: "planning" | "in-progress" | "completed" | "on-hold";
   cadernoEncargos?: CadernoEncargos;
   faturas: Fatura[];
   totalExpenses: number;
