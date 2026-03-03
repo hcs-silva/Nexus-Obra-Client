@@ -74,8 +74,10 @@ src/
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js **22.12.x (recommended)** or **20.19+**
 - pnpm 9+
+
+> Runtime normalization (Phase 1) is enabled via `scripts/runtimePreflight.mjs` and `.nvmrc`/`.node-version`. For best test stability, use Node `22.12.0`.
 
 ### Installation
 
@@ -158,3 +160,32 @@ This client expects a backend API. Ensure the backend is running and reachable a
 ## License
 
 Private project.
+
+## Docker
+
+This repo includes its own Docker setup (`Dockerfile` + `docker-compose.yml`).
+
+### Compose (repo-local)
+
+From `Client/`:
+
+```bash
+cp .env.docker.example .env
+docker compose up --build
+```
+
+- Client app: `http://localhost:8080`
+- Backend target is controlled by `VITE_BACKEND_URL` (default: `http://localhost:5005`)
+
+If your backend runs from a separate repository/container, set `VITE_BACKEND_URL` accordingly in `.env` before building.
+
+### Client image only
+
+From `Client/`:
+
+```bash
+docker build -t nexus-obra-client --build-arg VITE_BACKEND_URL=http://localhost:5005 .
+docker run --rm -p 8080:80 nexus-obra-client
+```
+
+For version tagging and rollback flow, see [RELEASE_CHECKLIST.md](./RELEASE_CHECKLIST.md).

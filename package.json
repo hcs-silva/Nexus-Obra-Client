@@ -3,13 +3,17 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "engines": {
+    "node": ">=20.19 <21 || >=22.12 <23"
+  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "vitest run",
-    "test:watch": "vitest"
+    "preflight": "node ./scripts/runtimePreflight.mjs",
+    "dev": "pnpm preflight && vite",
+    "build": "pnpm preflight && tsc -b && vite build",
+    "lint": "pnpm preflight && eslint .",
+    "preview": "pnpm preflight && vite preview",
+    "test": "pnpm preflight && vitest run",
+    "test:watch": "pnpm preflight && vitest"
   },
   "dependencies": {
     "axios": "^1.11.0",
