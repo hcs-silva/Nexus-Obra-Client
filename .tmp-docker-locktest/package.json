@@ -1,0 +1,46 @@
+{
+  "name": "gestao-obra-client",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=20.19 <21 || >=22.12 <23"
+  },
+  "scripts": {
+    "preflight": "node ./scripts/runtimePreflight.mjs",
+    "dev": "pnpm preflight && vite",
+    "build": "pnpm preflight && tsc -b && vite build",
+    "lint": "pnpm preflight && eslint .",
+    "preview": "pnpm preflight && vite preview",
+    "test": "pnpm preflight && vitest run",
+    "test:watch": "pnpm preflight && vitest"
+  },
+  "dependencies": {
+    "axios": "^1.11.0",
+    "dotenv": "^17.2.1",
+    "minimatch": "^10.2.4",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.1",
+    "react-toastify": "^11.0.5",
+    "sass": "^1.90.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "jsdom": "^26.1.0",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
+  }
+}
