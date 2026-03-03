@@ -68,7 +68,7 @@ function App() {
                 "dashboard",
                 <ProtectedRoute requireClientMatch={true}>
                   <DashboardPage />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -79,7 +79,7 @@ function App() {
                 "masterdash",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <MasterDashboard />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -89,7 +89,7 @@ function App() {
                 "allclients",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <ClientList />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -99,7 +99,7 @@ function App() {
                 "addclient",
                 <ProtectedRoute requiredRoles={["masterAdmin"]}>
                   <CreateClient />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -109,7 +109,7 @@ function App() {
                 "editclient",
                 <ProtectedRoute requireClientMatch={true}>
                   <EditClient />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -120,7 +120,7 @@ function App() {
                 "builds",
                 <ProtectedRoute>
                   <BuildList />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -130,7 +130,7 @@ function App() {
                 "quotations",
                 <ProtectedRoute>
                   <QuotationList />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
 
@@ -140,7 +140,7 @@ function App() {
                 "resetpassword",
                 <ProtectedRoute>
                   <PasswordUpdatePage />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -149,7 +149,7 @@ function App() {
                 "legacy-allobras",
                 <ProtectedRoute>
                   <LegacyObraRedirect type="allobras" />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -158,7 +158,7 @@ function App() {
                 "legacy-addobra",
                 <ProtectedRoute>
                   <LegacyObraRedirect type="addobra" />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -167,7 +167,7 @@ function App() {
                 "allobras",
                 <ProtectedRoute requireClientMatch={true}>
                   <ObraList />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -176,7 +176,7 @@ function App() {
                 "addobra",
                 <ProtectedRoute requireClientMatch={true}>
                   <CreateObra />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -185,7 +185,7 @@ function App() {
                 "editobra",
                 <ProtectedRoute>
                   <EditObra />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
             <Route
@@ -194,7 +194,7 @@ function App() {
                 "manageobra",
                 <ProtectedRoute>
                   <ManageObra />
-                </ProtectedRoute>
+                </ProtectedRoute>,
               )}
             ></Route>
           </Routes>
