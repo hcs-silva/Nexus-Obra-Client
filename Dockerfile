@@ -11,6 +11,7 @@ COPY . .
 
 ARG VITE_BACKEND_URL=http://localhost:5005
 ENV VITE_BACKEND_URL=${VITE_BACKEND_URL}
+ENV NEXUS_ALLOWED_CWD_LEAVES=Client,Nexus-Obra-Client,app
 
 RUN pnpm build
 
