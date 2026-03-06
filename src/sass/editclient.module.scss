@@ -12,7 +12,8 @@
 .container {
   @include flex-center;
   flex-direction: column;
-  background: white;
+  background: $bg-white;
+  border: 1px solid $gray-300;
   border-radius: $radius-lg;
   padding: $space-lg;
   box-shadow: $shadow-md;

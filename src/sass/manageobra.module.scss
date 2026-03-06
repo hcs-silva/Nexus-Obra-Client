@@ -1,0 +1,238 @@
+@use "../sass/variables" as *;
+@use "../sass/mixins" as *;
+
+.createClientWrapper {
+  @include flex-center;
+  flex-direction: column;
+  align-items: stretch;
+  background: $bg-white;
+  border: 1px solid $gray-300;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-md;
+  margin-bottom: $space-lg;
+  width: 100%;
+
+  @include respond-max($bp-sm) {
+    padding: $space-md;
+  }
+}
+
+.title {
+  @include heading($fs-3xl, 700, $primary-500);
+
+  @include respond-max($bp-sm) {
+    font-size: $fs-2xl;
+  }
+}
+
+.sectionSpacing {
+  margin-bottom: $space-lg;
+}
+
+.manageObraWrapper {
+  gap: $space-lg;
+}
+
+.manageHeader {
+  @include flex-between;
+  align-items: flex-start;
+  gap: $space-md;
+  padding-bottom: $space-md;
+  border-bottom: 1px solid $gray-300;
+}
+
+.manageSubtitle {
+  margin-top: $space-sm;
+  color: $gray-600;
+  font-size: $fs-lg;
+}
+
+.statusBadge {
+  @include badge($gray-200, $gray-800);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.statusPlanned {
+  background: $warning-50;
+  color: $warning-500;
+}
+
+.statusInProgress {
+  background: $info-50;
+  color: $info-500;
+}
+
+.statusCompleted {
+  background: $success-50;
+  color: $success-500;
+}
+
+.statusCancelled {
+  background: $error-50;
+  color: $error-500;
+}
+
+.manageSectionCard {
+  background: linear-gradient(
+    150deg,
+    rgba(11, 21, 40, 0.92),
+    rgba(19, 35, 61, 0.9)
+  );
+  border: 1px solid $gray-300;
+  border-radius: $radius-lg;
+  padding: $space-lg;
+  box-shadow: $shadow-sm;
+}
+
+.sectionTitle {
+  @include heading($fs-xl, 700, $gray-900);
+  margin-bottom: $space-md;
+}
+
+.detailsGrid {
+  @include grid(auto-fit, 220px, $space-md);
+}
+
+.detailItem {
+  background: rgba(6, 12, 24, 0.45);
+  border: 1px solid rgba(145, 170, 208, 0.16);
+  border-radius: $radius-md;
+  padding: $space-md;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+  transition: transform $transition-fast;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.detailLabel {
+  font-size: $fs-small;
+  color: $gray-600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detailValue {
+  color: $gray-900;
+  font-size: $fs-base;
+  line-height: 1.35;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.detailLink {
+  color: $primary-400;
+  text-decoration: none;
+
+  &:hover {
+    color: $primary-500;
+    text-decoration: underline;
+  }
+}
+
+.sectionHeader {
+  @include flex-between;
+  align-items: center;
+  gap: $space-md;
+  flex-wrap: wrap;
+
+  h2 {
+    margin: 0;
+    @include heading($fs-xl, 700, $gray-900);
+  }
+}
+
+.sectionActionBtn {
+  white-space: nowrap;
+}
+
+.formTopSpacing {
+  margin-top: $space-md;
+}
+
+.manageForm {
+  max-width: none;
+  width: 100%;
+  background: rgba(6, 12, 24, 0.78);
+  border: 1px solid $gray-300;
+  border-radius: $radius-lg;
+  box-shadow: none;
+
+  label {
+    color: $gray-900;
+  }
+}
+
+.tableTopSpacing {
+  margin-top: $space-md;
+}
+
+.centerCell {
+  text-align: center;
+  color: $gray-600;
+}
+
+.compactActionBtn {
+  padding: $space-xs $space-md;
+  min-width: 88px;
+}
+
+.totalsRow {
+  margin-top: $space-md;
+  padding-top: $space-md;
+  border-top: 1px solid $gray-300;
+  text-align: right;
+
+  h3 {
+    color: $gray-900;
+    font-size: $fs-xl;
+  }
+}
+
+.pageActions {
+  margin-top: $space-sm;
+}
+
+.stateMessage {
+  @include card;
+  width: 100%;
+  text-align: center;
+  color: $gray-700;
+  margin-bottom: $space-lg;
+
+  &:hover {
+    transform: none;
+    box-shadow: $shadow-md;
+  }
+}
+
+@include respond-max($bp-md) {
+  .manageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .statusBadge {
+    align-self: flex-start;
+  }
+
+  .manageSectionCard {
+    padding: $space-md;
+  }
+
+  .totalsRow h3 {
+    font-size: $fs-lg;
+  }
+}
+
+@include respond-max($bp-sm) {
+  .compactActionBtn {
+    min-width: 100%;
+  }
+}

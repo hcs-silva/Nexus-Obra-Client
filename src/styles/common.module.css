@@ -7,7 +7,7 @@
 h1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #111827;
+  color: #e8f0ff;
   line-height: 1.2;
 }
 
@@ -16,7 +16,7 @@ h1 {
   grid-template-columns: 220px 1fr;
   grid-template-rows: 1fr;
   min-height: 100vh;
-  background: #f9fafb;
+  background: #0a1426;
 }
 @media (max-width: 768px) {
   .layout {
@@ -71,23 +71,28 @@ h1 {
 form {
   display: flex;
   flex-direction: column;
-  background: #ffffff;
+  background: #13253f;
+  border: 1px solid #203454;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+form:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+}
+form {
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+}
+form:hover {
+  box-shadow: 0 24px 44px rgba(0, 0, 0, 0.52);
+}
+form {
   width: 100%;
   max-width: 400px;
   padding: 3rem;
   gap: 1rem;
-}
-form:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-form:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 576px) {
   form {
@@ -104,7 +109,7 @@ form:hover {
 form label {
   font-size: 1rem;
   font-weight: 600;
-  color: #111827;
+  color: #e8f0ff;
   line-height: 1.2;
   text-align: left;
 }
@@ -113,7 +118,9 @@ form select,
 form textarea {
   width: 100%;
   padding: 0.5rem 1rem;
-  border: 1px solid #d1d5db;
+  border: 1px solid #203454;
+  background-color: #0b1528;
+  color: #e8f0ff;
   border-radius: 8px;
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-size: 1rem;
@@ -123,13 +130,14 @@ form input:focus,
 form select:focus,
 form textarea:focus {
   outline: none;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.24);
 }
 form input:disabled,
 form select:disabled,
 form textarea:disabled {
-  background-color: #f3f4f6;
+  background-color: #13233d;
+  color: #6580a8;
   cursor: not-allowed;
 }
 form textarea {
@@ -148,29 +156,33 @@ form .button {
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
-  width: 100%;
-  padding: 1rem;
-  margin-top: 1rem;
 }
 form .button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+form .button {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
 form .button:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
 }
+form .button {
+  width: 100%;
+  padding: 1rem;
+  margin-top: 1rem;
+}
 form .link {
   text-align: center;
-  color: #4b5563;
+  color: #91aad0;
   font-size: 0.875rem;
 }
 form .link a {
-  color: #2563eb;
+  color: #3b82f6;
   font-weight: 600;
 }
 form .link a:hover {
@@ -200,7 +212,7 @@ form .link a:hover {
   gap: 1.5rem;
   justify-content: flex-end;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #13233d;
 }
 @media (max-width: 576px) {
   .actions {
@@ -227,19 +239,23 @@ form .link a:hover {
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
-  padding: 1rem 3rem;
 }
 .submitBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.submitBtn {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
 .submitBtn:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+}
+.submitBtn {
+  padding: 1rem 3rem;
 }
 @media (max-width: 576px) {
   .submitBtn {
@@ -264,17 +280,22 @@ form .link a:hover {
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: white;
-  color: #2563eb;
-  border: 2px solid #2563eb;
-  padding: 1rem 3rem;
 }
 .cancelBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.cancelBtn {
+  background-color: #0b1528;
+  color: #e8f0ff;
+  border: 1px solid #3d567b;
+}
 .cancelBtn:hover:not(:disabled) {
-  background-color: #eaf6fb;
+  background-color: #13233d;
+  border-color: #60a5fa;
+}
+.cancelBtn {
+  padding: 1rem 3rem;
 }
 @media (max-width: 576px) {
   .cancelBtn {
@@ -299,19 +320,24 @@ form .link a:hover {
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: white;
-  color: #2563eb;
-  border: 2px solid #2563eb;
-  width: 100%;
-  padding: 1rem 3rem;
-  margin-top: 20px;
 }
 .clearBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.clearBtn {
+  background-color: #0b1528;
+  color: #e8f0ff;
+  border: 1px solid #3d567b;
+}
 .clearBtn:hover:not(:disabled) {
-  background-color: #eaf6fb;
+  background-color: #13233d;
+  border-color: #60a5fa;
+}
+.clearBtn {
+  width: 100%;
+  padding: 1rem 3rem;
+  margin-top: 20px;
 }
 
 /*# sourceMappingURL=common.module.css.map */

@@ -4,7 +4,8 @@
 .clientListWrapper {
   @include flex-center;
   flex-direction: column;
-  background: white;
+  background: $bg-white;
+  border: 1px solid $gray-300;
   border-radius: $radius-lg;
   padding: $space-lg;
   box-shadow: $shadow-md;
@@ -63,8 +64,8 @@
   }
 
   th {
-    background: $primary-50;
-    color: $primary-700;
+    background: $gray-200;
+    color: $gray-900;
     font-weight: 600;
   }
 
@@ -121,7 +122,7 @@
   flex-direction: column;
   gap: $space-lg;
   padding: $space-2xl;
-  color: $gray-500;
+  color: $gray-600;
 
   p {
     font-size: $fs-lg;

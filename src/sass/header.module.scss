@@ -2,7 +2,8 @@
 @use "../sass/mixins" as *;
 
 .header {
-  @include flex-between;
+  @include flex-center;
+  justify-content: space-around;
   background: $bg-light;
   padding: $space-xl $space-lg;
   border-radius: $radius-lg;

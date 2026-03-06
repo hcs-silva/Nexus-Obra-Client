@@ -1,0 +1,260 @@
+.createClientWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  background: #13253f;
+  border: 1px solid #203454;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+@media (max-width: 576px) {
+  .createClientWrapper {
+    padding: 1rem;
+  }
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #3b82f6;
+  line-height: 1.2;
+}
+@media (max-width: 576px) {
+  .title {
+    font-size: 1.5rem;
+  }
+}
+
+.sectionSpacing {
+  margin-bottom: 1.5rem;
+}
+
+.manageObraWrapper {
+  gap: 1.5rem;
+}
+
+.manageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-items: flex-start;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #203454;
+}
+
+.manageSubtitle {
+  margin-top: 0.5rem;
+  color: #91aad0;
+  font-size: 1.125rem;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.5rem;
+  background-color: #13233d;
+  color: #d5e3f8;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+.statusPlanned {
+  background: #32280f;
+  color: #fbbf24;
+}
+
+.statusInProgress {
+  background: #11273b;
+  color: #60a5fa;
+}
+
+.statusCompleted {
+  background: #10291f;
+  color: #34d399;
+}
+
+.statusCancelled {
+  background: #32181d;
+  color: #f87171;
+}
+
+.manageSectionCard {
+  background: linear-gradient(150deg, rgba(11, 21, 40, 0.92), rgba(19, 35, 61, 0.9));
+  border: 1px solid #203454;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e8f0ff;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.detailItem {
+  background: rgba(6, 12, 24, 0.45);
+  border: 1px solid rgba(145, 170, 208, 0.16);
+  border-radius: 8px;
+  padding: 1rem;
+  min-height: 108px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: transform 0.2s ease-in-out;
+}
+.detailItem:hover {
+  transform: translateY(-2px);
+}
+
+.detailLabel {
+  font-size: 0.875rem;
+  color: #91aad0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.detailValue {
+  color: #e8f0ff;
+  font-size: 1rem;
+  line-height: 1.35;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.detailLink {
+  color: #60a5fa;
+  text-decoration: none;
+}
+.detailLink:hover {
+  color: #3b82f6;
+  text-decoration: underline;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.sectionHeader h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #e8f0ff;
+  line-height: 1.2;
+}
+
+.sectionActionBtn {
+  white-space: nowrap;
+}
+
+.formTopSpacing {
+  margin-top: 1rem;
+}
+
+.manageForm {
+  max-width: none;
+  width: 100%;
+  background: rgba(6, 12, 24, 0.78);
+  border: 1px solid #203454;
+  border-radius: 12px;
+  box-shadow: none;
+}
+.manageForm label {
+  color: #e8f0ff;
+}
+
+.tableTopSpacing {
+  margin-top: 1rem;
+}
+
+.centerCell {
+  text-align: center;
+  color: #91aad0;
+}
+
+.compactActionBtn {
+  padding: 0.25rem 1rem;
+  min-width: 88px;
+}
+
+.totalsRow {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid #203454;
+  text-align: right;
+}
+.totalsRow h3 {
+  color: #e8f0ff;
+  font-size: 1.25rem;
+}
+
+.pageActions {
+  margin-top: 0.5rem;
+}
+
+.stateMessage {
+  background: #13253f;
+  border: 1px solid #203454;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+  transition: all 0.3s ease-in-out;
+}
+.stateMessage:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
+}
+.stateMessage {
+  width: 100%;
+  text-align: center;
+  color: #b8cae5;
+  margin-bottom: 1.5rem;
+}
+.stateMessage:hover {
+  transform: none;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
+}
+
+@media (max-width: 768px) {
+  .manageHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .statusBadge {
+    align-self: flex-start;
+  }
+  .manageSectionCard {
+    padding: 1rem;
+  }
+  .totalsRow h3 {
+    font-size: 1.125rem;
+  }
+}
+@media (max-width: 576px) {
+  .compactActionBtn {
+    min-width: 100%;
+  }
+}
+
+/*# sourceMappingURL=manageobra.module.css.map */

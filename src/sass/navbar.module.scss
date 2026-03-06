@@ -3,8 +3,8 @@
 
 .navbar {
   width: 220px;
-  background: $gray-900;
-  color: white;
+  background: $gray-100;
+  color: $gray-900;
 
   padding: $space-lg;
   display: flex;
@@ -18,6 +18,14 @@
   overflow-y: auto;
   position: sticky;
   top: 0;
+
+  &.loggedIn {
+    justify-content: center;
+
+    .navActions {
+      margin-top: $space-sm;
+    }
+  }
 
   @include respond-max($bp-md) {
     width: 100%;
@@ -44,7 +52,7 @@
   }
 
   h1 {
-    @include heading($fs-xl, 700, white);
+    @include heading($fs-xl, 700, $gray-900);
     margin-bottom: $space-md;
 
     @include respond-max($bp-md) {
@@ -66,47 +74,12 @@
     }
   }
 
-  &.loginButton button {
-    @include button-primary;
-    width: 100%;
-    margin: $space-sm 0;
-
-    @include mobile-xs {
-      margin: 0 0 $space-xs 0;
-      padding: $space-sm $space-sm;
-      font-size: $fs-small;
-    }
-
-    &:last-of-type {
-      @include mobile-xs {
-        margin-bottom: 0;
-      }
-    }
-  }
-
-  &.logoutButton button {
-    @include button-danger;
-    width: 100%;
-    margin: $space-sm 0;
-
-    @include mobile-xs {
-      margin: 0 0 $space-xs 0;
-      padding: $space-sm $space-sm;
-      font-size: $fs-small;
-    }
-
-    &:last-of-type {
-      @include mobile-xs {
-        margin-bottom: 0;
-      }
-    }
-  }
-
   .logo {
     @include heading($fs-2xl, 700, $primary-500);
     display: flex;
     align-items: center;
     gap: $space-sm;
+    border-radius: 50%;
 
     @include mobile-xs {
       align-self: center;
@@ -143,12 +116,54 @@
   }
 }
 
+.clientId {
+  width: 100%;
+  padding: $space-sm;
+  border: 1px solid $gray-300;
+  border-radius: $radius-md;
+  background: $gray-200;
+  color: $gray-700;
+  font-size: $fs-small;
+  font-weight: 600;
+  text-align: center;
+}
+
+.navActions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $space-sm;
+}
+
+.navButton {
+  @include button-primary;
+  width: 100%;
+  margin: 0;
+
+  @include mobile-xs {
+    padding: $space-sm $space-sm;
+    font-size: $fs-small;
+  }
+}
+
+.logoutButton {
+  @include button-danger;
+  width: 100%;
+  margin: 0;
+
+  @include mobile-xs {
+    padding: $space-sm $space-sm;
+    font-size: $fs-small;
+  }
+}
+
 .mobileMenu {
   display: none;
 
   @include respond-max($bp-md) {
     display: block;
-    background: white;
+    background: $bg-white;
+    border: 1px solid $gray-300;
     border-radius: $radius-md;
     padding: $space-md;
     position: absolute;
@@ -163,8 +178,8 @@
       color: $gray-600;
 
       &:hover {
-        background: $primary-50;
-        color: $primary-500;
+        background: $gray-200;
+        color: $gray-900;
       }
     }
   }

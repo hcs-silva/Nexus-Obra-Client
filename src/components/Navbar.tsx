@@ -60,26 +60,38 @@ const Navbar = () => {
   const isMasterAdmin = !isLoggedIn || user?.role === "masterAdmin";
 
   return (
-    <div
-      className={`${styles.navbar} ${role === "guest" ? styles.loginButton : styles.logoutButton}`}
-    >
+    <div className={`${styles.navbar} ${isLoggedIn ? styles.loggedIn : ""}`}>
       <img
         src={logoToDisplay}
         alt="Client Logo"
         className={`${styles.logo} ${shouldHideImage ? styles.hidden : ""}`}
       />
-      {isMasterAdmin ? null : <span> Client ID: {user?.clientId}</span>}
-      {visibleItems.map((it) =>
-        "to" in it ? (
-          <button key={it.label} onClick={() => nav(resolvePath(it.to))}>
-            {it.label}
-          </button>
-        ) : (
-          <button key={it.label} onClick={handlers[it.onClick] ?? (() => {})}>
-            {it.label}
-          </button>
-        ),
+      {isMasterAdmin ? null : (
+        <span className={styles.clientId}>Client ID: {user?.clientId}</span>
       )}
+      <div className={styles.navActions}>
+        {visibleItems.map((it) =>
+          "to" in it ? (
+            <button
+              key={it.label}
+              className={styles.navButton}
+              onClick={() => nav(resolvePath(it.to))}
+            >
+              {it.label}
+            </button>
+          ) : (
+            <button
+              key={it.label}
+              className={
+                it.onClick === "logout" ? styles.logoutButton : styles.navButton
+              }
+              onClick={handlers[it.onClick] ?? (() => {})}
+            >
+              {it.label}
+            </button>
+          ),
+        )}
+      </div>
     </div>
   );
 };

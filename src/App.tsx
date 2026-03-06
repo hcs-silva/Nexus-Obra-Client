@@ -1,4 +1,5 @@
 import DashboardPage from "./Pages/DashboardPage";
+import LandingPage from "./Pages/LandingPage";
 import LoginPage from "./Pages/LoginPage";
 import MasterDashboard from "./Pages/MasterDashboard";
 import PasswordUpdatePage from "./Pages/PasswordUpdatePage";
@@ -15,7 +16,7 @@ import Header from "./components/Header";
 import Navbar from "./components/Navbar";
 import ProtectedRoute from "./components/ProtectedRoute";
 import styles from "./styles/common.module.css";
-import { Navigate, Routes, Route } from "react-router-dom";
+import { Navigate, Routes, Route, useLocation } from "react-router-dom";
 import { useAuth } from "./hooks/useAuth";
 
 import QuotationList from "./components/QuotationList";
@@ -41,9 +42,18 @@ const LegacyObraRedirect = ({ type }: { type: "obras" | "addobra" }) => {
 };
 
 function App() {
+  const location = useLocation();
+
   const withRouteBoundary = (name: string, element: ReactNode) => (
     <RouteErrorBoundary routeName={name}>{element}</RouteErrorBoundary>
   );
+
+  const normalizedPath = location.pathname.replace(/\/+$/, "") || "/";
+  const isLandingPreview = normalizedPath === "/landing";
+
+  if (isLandingPreview) {
+    return withRouteBoundary("landing", <LandingPage />);
+  }
 
   return (
     <div className={styles.layout}>

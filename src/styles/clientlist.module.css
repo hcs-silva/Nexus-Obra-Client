@@ -3,10 +3,11 @@
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background: white;
+  background: #13253f;
+  border: 1px solid #203454;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
   margin-bottom: 1.5rem;
   width: 100%;
 }
@@ -32,7 +33,7 @@
 .header h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #111827;
+  color: #e8f0ff;
   line-height: 1.2;
 }
 @media (max-width: 576px) {
@@ -44,7 +45,7 @@
 .title {
   font-size: 1.875rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #3b82f6;
   line-height: 1.2;
 }
 @media (max-width: 360px) {
@@ -61,22 +62,25 @@
 .table {
   width: 100%;
   border-collapse: collapse;
-  width: 100%;
 }
 .table th {
-  background: #f9fafb;
+  background: #0b1528;
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #111827;
-  border-bottom: 2px solid #e5e7eb;
+  color: #e8f0ff;
+  border-bottom: 2px solid #203454;
 }
 .table td {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  color: #d5e3f8;
+  border-bottom: 1px solid #203454;
 }
 .table tr:hover {
-  background: #f9fafb;
+  background: #13233d;
+}
+.table {
+  width: 100%;
 }
 @media (min-width: 1440px) {
   .table th,
@@ -90,15 +94,15 @@
   }
 }
 .table th {
-  background: #eaf6fb;
-  color: #1e40af;
+  background: #13233d;
+  color: #e8f0ff;
   font-weight: 600;
 }
 .table td {
-  color: #374151;
+  color: #b8cae5;
 }
 .table tr:hover {
-  background: #f9fafb;
+  background: #060c18;
 }
 
 .actions {
@@ -124,20 +128,24 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
 }
 .editBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.editBtn {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
 .editBtn:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+}
+.editBtn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 @media (max-width: 360px) {
   .editBtn {
@@ -158,17 +166,21 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #ef4444;
-  color: white;
-  padding: 0.5rem 1rem;
-  font-size: 0.875rem;
 }
 .deleteBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.deleteBtn {
+  background-color: #f87171;
+  color: white;
+}
 .deleteBtn:hover:not(:disabled) {
-  background-color: #dc2626;
+  background-color: #ef4444;
+}
+.deleteBtn {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
 }
 
 .centerCell {
@@ -191,7 +203,7 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 3rem;
-  color: #6b7280;
+  color: #91aad0;
 }
 .emptyState p {
   font-size: 1.125rem;

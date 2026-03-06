@@ -1,4 +1,4 @@
-import styles from "../sass/createclient.module.scss";
+import styles from "../styles/manageobra.module.css";
 import commonStyles from "../styles/common.module.css";
 import tableStyles from "../styles/table.module.css";
 import { useNavigate, useParams } from "react-router-dom";
@@ -215,73 +215,115 @@ const ManageObra = () => {
   };
 
   if (loading) {
-    return <div>A carregar...</div>;
+    return <div className={styles.stateMessage}>A carregar...</div>;
   }
 
   if (!obra) {
-    return <div>Obra não encontrada</div>;
+    return <div className={styles.stateMessage}>Obra não encontrada</div>;
   }
 
   const getStatusLabel = (status: string) => {
     const statusMap: Record<string, string> = {
       planned: "Planeada",
+      planning: "Planeada",
       "in-progress": "Em Progresso",
       completed: "Concluída",
       cancelled: "Cancelada",
+      "on-hold": "Em Espera",
     };
     return statusMap[status] || status;
   };
 
-  return (
-    <div className={styles.createClientWrapper}>
-      <h1 className={styles.title}>Gerir Obra: {obra.obraName}</h1>
+  const statusClassMap: Record<string, string> = {
+    planned: styles.statusPlanned,
+    planning: styles.statusPlanned,
+    "in-progress": styles.statusInProgress,
+    completed: styles.statusCompleted,
+    cancelled: styles.statusCancelled,
+    "on-hold": styles.statusCancelled,
+  };
 
-      <div className={styles.sectionSpacing}>
-        <h2>Detalhes da Obra</h2>
-        <p>
-          <strong>Nome:</strong> {obra.obraName}
-        </p>
-        <p>
-          <strong>Descrição:</strong> {obra.obraDescription || "N/A"}
-        </p>
-        <p>
-          <strong>Localização:</strong> {obra.obraLocation || "N/A"}
-        </p>
-        <p>
-          <strong>Estado:</strong> {getStatusLabel(obra.obraStatus)}
-        </p>
-        {obra.startDate && (
-          <p>
-            <strong>Data de Início:</strong>{" "}
-            {new Date(obra.startDate).toLocaleDateString()}
-          </p>
-        )}
-        {obra.endDate && (
-          <p>
-            <strong>Data de Fim:</strong>{" "}
-            {new Date(obra.endDate).toLocaleDateString()}
-          </p>
-        )}
-        {obra.cadernoEncargos && (
-          <p>
-            <strong>Caderno de Encargos:</strong>{" "}
-            <a
-              href={obra.cadernoEncargos.fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {obra.cadernoEncargos.fileName}
-            </a>
-          </p>
-        )}
+  return (
+    <div
+      className={`${styles.createClientWrapper} ${styles.manageObraWrapper}`}
+    >
+      <div className={styles.manageHeader}>
+        <div>
+          <h1 className={styles.title}>Gerir Obra</h1>
+          <p className={styles.manageSubtitle}>{obra.obraName}</p>
+        </div>
+        <span
+          className={`${styles.statusBadge} ${statusClassMap[obra.obraStatus] || styles.statusPlanned}`}
+        >
+          {getStatusLabel(obra.obraStatus)}
+        </span>
       </div>
 
-      <div className={styles.sectionSpacing}>
+      <section
+        className={`${styles.sectionSpacing} ${styles.manageSectionCard}`}
+      >
+        <h2 className={styles.sectionTitle}>Detalhes da Obra</h2>
+        <div className={styles.detailsGrid}>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Nome</span>
+            <strong className={styles.detailValue}>{obra.obraName}</strong>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Descrição</span>
+            <strong className={styles.detailValue}>
+              {obra.obraDescription || "N/A"}
+            </strong>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Localização</span>
+            <strong className={styles.detailValue}>
+              {obra.obraLocation || "N/A"}
+            </strong>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Data de Início</span>
+            <strong className={styles.detailValue}>
+              {obra.startDate
+                ? new Date(obra.startDate).toLocaleDateString()
+                : "N/A"}
+            </strong>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Data de Fim</span>
+            <strong className={styles.detailValue}>
+              {obra.endDate
+                ? new Date(obra.endDate).toLocaleDateString()
+                : "N/A"}
+            </strong>
+          </div>
+          <div className={styles.detailItem}>
+            <span className={styles.detailLabel}>Caderno de Encargos</span>
+            <strong className={styles.detailValue}>
+              {obra.cadernoEncargos ? (
+                <a
+                  href={obra.cadernoEncargos.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={styles.detailLink}
+                >
+                  {obra.cadernoEncargos.fileName}
+                </a>
+              ) : (
+                "N/A"
+              )}
+            </strong>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className={`${styles.sectionSpacing} ${styles.manageSectionCard}`}
+      >
         <div className={styles.sectionHeader}>
           <h2>Faturas</h2>
           <button
             onClick={() => setShowAddFatura(!showAddFatura)}
-            className={commonStyles.submitBtn}
+            className={`${commonStyles.submitBtn} ${styles.sectionActionBtn}`}
           >
             {showAddFatura ? "Cancelar" : "Adicionar Fatura"}
           </button>
@@ -289,7 +331,7 @@ const ManageObra = () => {
 
         {showAddFatura && (
           <form
-            className={`${commonStyles.form} ${styles.formTopSpacing}`}
+            className={`${commonStyles.form} ${styles.formTopSpacing} ${styles.manageForm}`}
             onSubmit={handleAddFatura}
           >
             <label>
@@ -350,59 +392,70 @@ const ManageObra = () => {
           </form>
         )}
 
-        <table className={`${tableStyles.table} ${styles.tableTopSpacing}`}>
-          <thead>
-            <tr>
-              <th>Descrição</th>
-              <th>Categoria</th>
-              <th>Data</th>
-              <th>Valor</th>
-              <th>Opções</th>
-            </tr>
-          </thead>
-          <tbody>
-            {obra.faturas.length === 0 ? (
+        <div
+          className={`${tableStyles.tableWrapper} ${styles.tableTopSpacing}`}
+        >
+          <table className={tableStyles.tableContainer}>
+            <thead>
               <tr>
-                <td colSpan={5} className={styles.centerCell}>
-                  Nenhuma fatura adicionada
-                </td>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th>Opções</th>
               </tr>
-            ) : (
-              obra.faturas.map((fatura) => (
-                <tr key={fatura._id}>
-                  <td>{fatura.description}</td>
-                  <td>{fatura.category || "N/A"}</td>
-                  <td>{new Date(fatura.date).toLocaleDateString()}</td>
-                  <td>€{fatura.amount.toFixed(2)}</td>
-                  <td>
-                    <button
-                      onClick={() => handleStartEditFatura(fatura)}
-                      className={`${commonStyles.submitBtn} ${styles.compactActionBtn}`}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => handleDeleteFatura(fatura._id!)}
-                      className={`${commonStyles.cancelBtn} ${styles.compactActionBtn}`}
-                    >
-                      Apagar
-                    </button>
+            </thead>
+            <tbody>
+              {obra.faturas.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className={styles.centerCell}>
+                    Nenhuma fatura adicionada
                   </td>
                 </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+              ) : (
+                obra.faturas.map((fatura) => (
+                  <tr key={fatura._id}>
+                    <td>{fatura.description}</td>
+                    <td>{fatura.category || "N/A"}</td>
+                    <td>{new Date(fatura.date).toLocaleDateString()}</td>
+                    <td>€{fatura.amount.toFixed(2)}</td>
+                    <td>
+                      <div className={tableStyles.actionCell}>
+                        <button
+                          onClick={() => handleStartEditFatura(fatura)}
+                          className={`${commonStyles.submitBtn} ${styles.compactActionBtn}`}
+                        >
+                          Editar
+                        </button>
+                        <button
+                          onClick={() => handleDeleteFatura(fatura._id!)}
+                          className={`${commonStyles.cancelBtn} ${styles.compactActionBtn}`}
+                        >
+                          Apagar
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
 
         <div className={styles.totalsRow}>
           <h3>Total de Despesas: €{obra.totalExpenses.toFixed(2)}</h3>
         </div>
-      </div>
+      </section>
 
       {editingFaturaId && (
-        <div className={styles.sectionSpacing}>
-          <h2>Atualizar Fatura</h2>
-          <form className={commonStyles.form} onSubmit={handleUpdateFatura}>
+        <section
+          className={`${styles.sectionSpacing} ${styles.manageSectionCard}`}
+        >
+          <h2 className={styles.sectionTitle}>Atualizar Fatura</h2>
+          <form
+            className={`${commonStyles.form} ${styles.manageForm}`}
+            onSubmit={handleUpdateFatura}
+          >
             <label>
               Obra:*
               <select
@@ -468,10 +521,10 @@ const ManageObra = () => {
               </button>
             </div>
           </form>
-        </div>
+        </section>
       )}
 
-      <div className={commonStyles.actions}>
+      <div className={`${commonStyles.actions} ${styles.pageActions}`}>
         <button
           onClick={() => nav(allObrasPath)}
           className={commonStyles.cancelBtn}

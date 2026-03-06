@@ -1,7 +1,7 @@
 .navbar {
   width: 220px;
-  background: #111827;
-  color: white;
+  background: #0b1528;
+  color: #e8f0ff;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
@@ -14,6 +14,12 @@
   overflow-y: auto;
   position: sticky;
   top: 0;
+}
+.navbar.loggedIn {
+  justify-content: center;
+}
+.navbar.loggedIn .navActions {
+  margin-top: 0.5rem;
 }
 @media (max-width: 768px) {
   .navbar {
@@ -44,7 +50,7 @@
 .navbar h1 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: white;
+  color: #e8f0ff;
   line-height: 1.2;
   margin-bottom: 1rem;
 }
@@ -67,89 +73,15 @@
     margin: 0;
   }
 }
-.navbar.loginButton button {
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.5rem;
-  text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
-  width: 100%;
-  margin: 0.5rem 0;
-}
-.navbar.loginButton button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.navbar.loginButton button:hover:not(:disabled) {
-  background-color: #1d4ed8;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
-}
-@media (max-width: 360px) {
-  .navbar.loginButton button {
-    margin: 0 0 0.25rem 0;
-    padding: 0.5rem 0.5rem;
-    font-size: 0.875rem;
-  }
-}
-@media (max-width: 360px) {
-  .navbar.loginButton button:last-of-type {
-    margin-bottom: 0;
-  }
-}
-.navbar.logoutButton button {
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  padding: 0.5rem 1.5rem;
-  text-decoration: none;
-  background-color: #ef4444;
-  color: white;
-  width: 100%;
-  margin: 0.5rem 0;
-}
-.navbar.logoutButton button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-.navbar.logoutButton button:hover:not(:disabled) {
-  background-color: #dc2626;
-}
-@media (max-width: 360px) {
-  .navbar.logoutButton button {
-    margin: 0 0 0.25rem 0;
-    padding: 0.5rem 0.5rem;
-    font-size: 0.875rem;
-  }
-}
-@media (max-width: 360px) {
-  .navbar.logoutButton button:last-of-type {
-    margin-bottom: 0;
-  }
-}
 .navbar .logo {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2563eb;
+  color: #3b82f6;
   line-height: 1.2;
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  border-radius: 50%;
 }
 @media (max-width: 360px) {
   .navbar .logo {
@@ -185,19 +117,23 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
-  padding: 0.5rem 1.5rem;
 }
 .navbar .actions button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.navbar .actions button {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
 .navbar .actions button:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+}
+.navbar .actions button {
+  padding: 0.5rem 1.5rem;
 }
 @media (max-width: 768px) {
   .navbar .actions button {
@@ -208,29 +144,122 @@
   display: none;
 }
 
+.clientId {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #203454;
+  border-radius: 8px;
+  background: #13233d;
+  color: #b8cae5;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.navActions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navButton {
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+}
+.navButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.navButton {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
+.navButton:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
+}
+.navButton {
+  width: 100%;
+  margin: 0;
+}
+@media (max-width: 360px) {
+  .navButton {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
+.logoutButton {
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+}
+.logoutButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.logoutButton {
+  background-color: #f87171;
+  color: white;
+}
+.logoutButton:hover:not(:disabled) {
+  background-color: #ef4444;
+}
+.logoutButton {
+  width: 100%;
+  margin: 0;
+}
+@media (max-width: 360px) {
+  .logoutButton {
+    padding: 0.5rem 0.5rem;
+    font-size: 0.875rem;
+  }
+}
+
 .mobileMenu {
   display: none;
 }
 @media (max-width: 768px) {
   .mobileMenu {
     display: block;
-    background: white;
+    background: #13253f;
+    border: 1px solid #203454;
     border-radius: 8px;
     padding: 1rem;
     position: absolute;
     top: 100%;
     right: 0;
     min-width: 200px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.38);
   }
   .mobileMenu a {
     display: block;
     padding: 1rem;
-    color: #4b5563;
+    color: #91aad0;
   }
   .mobileMenu a:hover {
-    background: #eaf6fb;
-    color: #2563eb;
+    background: #13233d;
+    color: #e8f0ff;
   }
 }
 

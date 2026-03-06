@@ -1,8 +1,9 @@
 .tableWrapper {
-  background: white;
+  background: #13253f;
+  border: 1px solid #203454;
   border-radius: 12px;
   padding: 1.5rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.32);
   overflow-x: auto;
 }
 @media (max-width: 576px) {
@@ -21,19 +22,20 @@
   border-collapse: collapse;
 }
 .tableContainer th {
-  background: #f9fafb;
+  background: #0b1528;
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #111827;
-  border-bottom: 2px solid #e5e7eb;
+  color: #e8f0ff;
+  border-bottom: 2px solid #203454;
 }
 .tableContainer td {
   padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  color: #d5e3f8;
+  border-bottom: 1px solid #203454;
 }
 .tableContainer tr:hover {
-  background: #f9fafb;
+  background: #13233d;
 }
 @media (min-width: 1440px) {
   .tableContainer thead th,
@@ -47,18 +49,18 @@
   }
 }
 .tableContainer thead th {
-  background: #eaf6fb;
-  color: #1e40af;
+  background: #13233d;
+  color: #e8f0ff;
   font-weight: 600;
   padding: 1rem;
   text-align: center;
 }
 .tableContainer tbody tr:hover {
-  background: #f9fafb;
+  background: #060c18;
 }
 .tableContainer tbody tr td {
   padding: 1rem;
-  color: #374151;
+  color: #d5e3f8;
 }
 .tableContainer tbody tr:last-child td {
   border-bottom: none;
@@ -89,15 +91,19 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  padding: 0.25rem 1rem;
-  font-size: 0.875rem;
-  border-radius: 8px;
 }
 .editBtn:disabled,
 .deleteBtn:disabled,
 .viewBtn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.editBtn,
+.deleteBtn,
+.viewBtn {
+  padding: 0.25rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 8px;
 }
 @media (max-width: 360px) {
   .editBtn,
@@ -109,27 +115,27 @@
 }
 
 .editBtn {
-  background: #2563eb;
+  background: #3b82f6;
   color: white;
 }
 .editBtn:hover {
-  background: #1d4ed8;
+  background: #2563eb;
 }
 
 .deleteBtn {
-  background: #ef4444;
+  background: #f87171;
   color: white;
 }
 .deleteBtn:hover {
-  background: #dc2626;
+  background: #ef4444;
 }
 
 .viewBtn {
-  background: #4fa8d5;
+  background: #60a5fa;
   color: white;
 }
 .viewBtn:hover {
-  background: #2f8dbe;
+  background: #3b82f6;
 }
 
 .pagination {
@@ -138,7 +144,7 @@
   justify-content: center;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #e5e7eb;
+  border-top: 1px solid #13233d;
 }
 @media (max-width: 576px) {
   .pagination {
@@ -158,16 +164,18 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  color: #374151;
 }
 .pagination button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.pagination button {
+  padding: 0.5rem 1rem;
+  background: #0b1528;
+  color: #b8cae5;
+}
 .pagination button:hover:not(:disabled) {
-  background: #2563eb;
+  background: #3b82f6;
   color: white;
 }
 .pagination button:disabled {
@@ -175,7 +183,7 @@
   cursor: not-allowed;
 }
 .pagination button.active {
-  background: #2563eb;
+  background: #3b82f6;
   color: white;
 }
 
@@ -186,14 +194,14 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 3rem;
-  color: #6b7280;
+  color: #91aad0;
 }
 .emptyState .icon {
   font-size: 2.25rem;
 }
 .emptyState p {
   font-size: 1.125rem;
-  color: #6b7280;
+  color: #91aad0;
 }
 .emptyState button {
   border: none;
@@ -207,16 +215,18 @@
   gap: 0.5rem;
   padding: 0.5rem 1.5rem;
   text-decoration: none;
-  background-color: #2563eb;
-  color: white;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
 }
 .emptyState button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.emptyState button {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.4);
+}
 .emptyState button:hover:not(:disabled) {
-  background-color: #1d4ed8;
+  background-color: #2563eb;
   transform: translateY(-2px);
   box-shadow: 0 6px 25px rgba(37, 99, 235, 0.5);
 }
@@ -226,7 +236,7 @@
   justify-content: center;
   align-items: center;
   padding: 3rem;
-  color: #9ca3af;
+  color: #91aad0;
 }
 .loadingState .spinner {
   display: flex;
@@ -237,7 +247,7 @@
 .loadingState .spinner span {
   width: 8px;
   height: 8px;
-  background: #2563eb;
+  background: #3b82f6;
   border-radius: 50%;
   animation: bounce 1.4s infinite;
 }

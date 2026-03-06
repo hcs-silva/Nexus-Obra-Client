@@ -1,287 +1,150 @@
 @use "../sass/variables" as *;
 @use "../sass/mixins" as *;
 
-.dashboardContainer {
-  display: flex;
-  min-height: 100vh;
-  background: $bg-light;
-  margin: 15px;
-
-  @include desktop-2xl {
-    margin: $space-lg;
-  }
-
-  @include respond-max($bp-md) {
-    flex-direction: column;
-    margin: $space-sm;
-  }
-}
-
-.sidebar {
-  width: 250px;
-  background: $gray-900;
-  color: white;
-  padding: $space-lg 0;
-  position: fixed;
-  height: 100vh;
-  overflow-y: auto;
-  box-shadow: $shadow-lg;
-
-  @include respond-max($bp-md) {
-    width: 100%;
-    position: relative;
-    height: auto;
-    padding: $space-md 0;
-  }
-
-  .logo {
-    @include heading($fs-2xl, 700, $primary-400);
-    padding: 0 $space-lg;
-    margin-bottom: $space-2xl;
-    text-align: center;
-
-    @include respond-max($bp-md) {
-      margin-bottom: $space-md;
-      font-size: $fs-xl;
-    }
-  }
-
-  .menu {
-    list-style: none;
-  }
-
-  .menuItem {
-    @include nav-item;
-    padding: $space-md $space-lg;
-    margin: $space-xs $space-sm;
-    border-radius: $radius-md;
-
-    &:hover {
-      background: $gray-800;
-    }
-
-    &.active {
-      background: $primary-500;
-      border-left: 4px solid $primary-400;
-    }
-  }
-}
-
-.mainContent {
-  margin-left: 250px;
-  flex: 1;
-  padding: $space-lg;
-  overflow-y: auto;
-
-  @include desktop-2xl {
-    padding: $space-xl;
-  }
-
-  @include respond-max($bp-md) {
-    margin-left: 0;
-    padding: $space-md;
-  }
-}
-
-.topbar {
-  background: white;
-  padding: $space-lg $space-xl;
-  border-radius: $radius-lg;
-  margin-bottom: $space-lg;
-  @include flex-between;
-  box-shadow: $shadow-md;
-
-  @include respond-max($bp-md) {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: $space-md;
-    padding: $space-md;
-  }
-
-  @include mobile-xs {
-    padding: $space-sm;
-  }
-
-  h1 {
-    @include heading($fs-2xl, 700, $gray-900);
-
-    @include respond-max($bp-sm) {
-      font-size: $fs-xl;
-    }
-  }
-
-  .actions {
-    display: flex;
-    gap: $space-lg;
-    align-items: center;
-
-    @include respond-max($bp-sm) {
-      width: 100%;
-      justify-content: space-between;
-      gap: $space-sm;
-      flex-wrap: wrap;
-    }
-  }
-
-  .upgradeBadge {
-    @include badge($warning-50, $warning-600);
-    padding: $space-sm $space-lg;
-    font-size: $fs-small;
-    cursor: pointer;
-  }
-}
-
-.cardsGrid {
+.dashboardContainer,
+.masterDashboardContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: $space-lg;
-  margin-bottom: $space-lg;
+  width: 100%;
+  min-height: 100%;
+  padding: $space-lg;
 
   @include respond-max($bp-md) {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    padding: $space-md;
     gap: $space-md;
   }
+}
+
+.heroCard {
+  @include card;
+  display: grid;
+  grid-template-columns: 1.2fr auto;
+  gap: $space-lg;
+  align-items: end;
+  border: 1px solid rgba(131, 160, 204, 0.3);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(59, 130, 246, 0.16), transparent 42%),
+    linear-gradient(180deg, rgba(19, 37, 63, 0.96) 0%, rgba(23, 45, 75, 0.96) 100%);
+
+  @include respond-max($bp-lg) {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+.eyebrow {
+  width: fit-content;
+  padding: $space-xs $space-sm;
+  border-radius: $radius-full;
+  border: 1px solid rgba(117, 163, 255, 0.36);
+  background: rgba(37, 99, 235, 0.22);
+  color: #bfdbfe;
+  font-size: $fs-xs;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: $space-sm;
+}
+
+.pageTitle {
+  @include heading(clamp(1.8rem, 3.8vw, 2.7rem), 800, $gray-900);
+  margin-bottom: $space-sm;
+}
+
+.pageSubtitle {
+  max-width: 62ch;
+  margin: 0;
+  color: $gray-700;
+  font-size: $fs-base;
+  line-height: 1.6;
+}
+
+.actionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-sm;
 
   @include respond-max($bp-sm) {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.actionBtn {
+  @include button-primary;
+  min-width: 180px;
+}
+
+.actionBtnSecondary {
+  @include button-secondary;
+  min-width: 180px;
+}
+
+.quickGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: $space-md;
+
+  @include respond-max($bp-xl) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include respond-max($bp-md) {
     grid-template-columns: 1fr;
   }
+}
 
-  @include desktop-2xl {
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+/* Dashboard de cliente usa 2 cards: equilibrar largura no desktop */
+.dashboardContainer .quickGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  @include respond-max($bp-md) {
+    grid-template-columns: 1fr;
   }
 }
 
-.card {
+.quickCard {
   @include card;
-
-  @include desktop-2xl {
-    padding: $space-xl;
-  }
-
-  @include respond-max($bp-sm) {
-    padding: $space-md;
-  }
-
-  @include mobile-xs {
-    padding: $space-sm;
-  }
-
-  .cardHeader {
-    @include flex-between;
-    margin-bottom: $space-md;
-
-    h3 {
-      @include heading($fs-lg, 600, $gray-900);
-    }
-
-    .icon {
-      font-size: $fs-2xl;
-    }
-  }
-
-  .kpiValue {
-    @include heading($fs-4xl, 800, $primary-500);
-    margin: $space-md 0;
-
-    @include respond-max($bp-sm) {
-      font-size: $fs-3xl;
-    }
-
-    @include mobile-xs {
-      font-size: $fs-2xl;
-    }
-  }
-
-  .kpiLabel {
-    color: $gray-500;
-    font-size: $fs-small;
-  }
-}
-
-.progressBar {
-  background: $gray-200;
-  border-radius: $radius-lg;
-  height: 10px;
-  overflow: hidden;
-  margin: $space-md 0;
-
-  .progressFill {
-    background: linear-gradient(90deg, $secondary-500 0%, $secondary-600 100%);
-    height: 100%;
-    border-radius: $radius-lg;
-    transition: width $transition-slow;
-  }
-}
-
-.alertItem {
-  @include flex-between;
-  padding: $space-md;
-  background: $error-50;
-  border-left: 4px solid $error-500;
-  border-radius: $radius-md;
-  margin-bottom: $space-sm;
-  color: $error-600;
-
-  &.success {
-    background: $success-50;
-    border-left-color: $success-500;
-    color: $success-600;
-  }
-
-  &.warning {
-    background: $warning-50;
-    border-left-color: $warning-500;
-    color: $warning-600;
-  }
-
-  &.info {
-    background: $info-50;
-    border-left-color: $info-500;
-    color: $info-600;
-  }
-}
-
-.uploadZone {
-  border: 2px dashed $gray-300;
-  border-radius: $radius-lg;
-  padding: $space-2xl;
-  text-align: center;
-  cursor: pointer;
-  transition: all $transition-base;
-  background: white;
-
-  @include respond-max($bp-sm) {
-    padding: $space-lg;
-  }
+  border: 1px solid rgba(131, 160, 204, 0.24);
+  background: linear-gradient(180deg, rgba(19, 37, 63, 0.95) 0%, rgba(23, 45, 75, 0.95) 100%);
+  display: grid;
+  gap: $space-md;
+  align-content: start;
+  transition:
+    transform $transition-fast,
+    box-shadow $transition-fast,
+    border-color $transition-fast;
 
   &:hover {
-    border-color: $primary-500;
-    background: $primary-50;
+    transform: translateY(-2px) scale(1.015);
+    box-shadow: 0 12px 26px rgba(4, 10, 20, 0.44);
+    border-color: rgba(96, 165, 250, 0.55);
   }
 
-  .icon {
-    font-size: $fs-4xl;
-    display: block;
-    margin-bottom: $space-md;
+  h2 {
+    @include heading($fs-xl, 700, $gray-900);
+    margin: 0;
   }
 
   p {
-    color: $gray-600;
+    margin: 0;
+    color: $gray-700;
+    line-height: 1.55;
   }
 }
 
-.statusBadge {
-  @include badge($gray-100, $gray-600);
+.quickCardAction {
+  @include button-secondary;
+  width: fit-content;
+  margin-top: $space-xs;
+}
 
-  &.active {
-    @include badge($success-50, $success-600);
-  }
-
-  &.inactive {
-    @include badge($error-50, $error-600);
-  }
-
-  &.pending {
-    @include badge($warning-50, $warning-600);
+@media (prefers-reduced-motion: reduce) {
+  .quickCard,
+  .actionBtn,
+  .actionBtnSecondary,
+  .quickCardAction {
+    transition: none;
+    transform: none;
   }
 }
